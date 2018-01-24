@@ -32,11 +32,11 @@ with open("../Reference/HPA_rna_tissue.tsv", 'r') as tis:
 ## PART2: Creates a pandas dataframe from the nested dictionary
 ## and write into an output file
 df = pd.DataFrame.from_dict(expression,orient='index')
-df.to_csv(path_or_buf='../Reference/HPA_processed.tsv', sep='\t')
+df.to_csv(path_or_buf='../Data/HPA_processed.tsv', sep='\t')
 
 ### GTEx
 ## Much simpler because already in a table-like format.
-proc_gtex = open("../Reference/GTEx_processed.tsv", 'w')
+proc_gtex = open("../Data/GTEx_processed.tsv", 'w')
 with open("../Reference/GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tpm.gct", 'r') as gtex:
     gtex = gtex.read().splitlines()
     header = gtex[2].replace("gene_id\t", "").replace("Description\t", "")

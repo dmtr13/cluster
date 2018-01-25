@@ -1,8 +1,9 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 import sys
 import pandas as pd
 
 ### HUMAN PROTEIN ATLAS
+print ("Processing HPA...")
 ## PART1: Opens the file and take the list of genes and tissues.
 expression = dict()
 tissues = set()
@@ -35,6 +36,7 @@ df = pd.DataFrame.from_dict(expression,orient='index')
 df.to_csv(path_or_buf='../Data/HPA_processed.tsv', sep='\t')
 
 ### GTEx
+print ("Processing GTEx...")
 ## Much simpler because already in a table-like format.
 proc_gtex = open("../Data/GTEx_processed.tsv", 'w')
 with open("../Reference/GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tpm.gct", 'r') as gtex:
@@ -42,9 +44,13 @@ with open("../Reference/GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tp
     header = gtex[2].replace("gene_id\t", "").replace("Description\t", "")
     header = header.split('\t')
     proc_gtex.write('\t'.join(header)+'\n')
+    temp = []
     for line in gtex[3:]:
         line = (line.split('\t'))[1:]
-        proc_gtex.write('\t'.join(line) + '\n')
+        temp.append('\t'.join(line))
+    temp = sorted(temp)
+    for i in temp:
+        proc_gtex.write(i+'\n')
 
 
 print ("Done!")

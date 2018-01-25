@@ -1,27 +1,149 @@
 #!/bin/usr/env python3
 import math, sys
 import numpy as np
+import pandas as pd
 
 
 ## this might be wrong, as we're looking into variations of the genes
 ## between the tissues, so the matrix should be between genes and genes
 ## instead of tissues and tissues
 
+df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
+header = list(df)
+genes = df.index.tolist()
+c = len(genes)
+print (c)
 
-filename = open(sys.argv[1], 'r')
-filename = filename.read().splitlines()
-header = filename[0].split('\t')
-del header[0]
-c = len(header)
-dimension = len(header)
-genes = []
-values = []
+def euclidean(vect1, vect2):
+    return ((vect1-vect2)**2)
+
+euclid = []
+count = 1
+
+##
+c = 2000
+##
+
+output = open("../Data/HPA_Euclidean_1.tsv", 'w')
+
+output.write('DM\t'+'\t'.join(genes[:3])+'\n')
+for i in range(c):
+    if count % 50 == 0:
+        print ("{}/{} genes...".format(count, c-1))
+    eu = []
+    output.write(str(genes[i])+'\t')
+    for j in range(c):
+
+        print ("Position [{}, {}]".format(i,j))
+        vect1 = df.iloc[i,]
+        vect2 = df.iloc[j,]
+        # output.write(str(math.sqrt(sum(euclidean(vect1, vect2))))+'\n')
+        eu.append(math.sqrt(sum(euclidean(vect1, vect2))))
+    output.write('\t'.join([str(x) for x in eu])+'\n')
+    # euclid.append(eu)
+    count += 1
+
+# df = pd.DataFrame(euclid, index=genes, columns=genes)
+# df.to_csv('euclid.tsv', index=True, header=True, sep='\t')
+
+# print (df.iloc[0,])
+# print (df.iloc[0,15:18])
+
+sys.exit()
+
+# with open('ex.txt') as f:
+#     print zip(*[line.split() for line in f])[1]
+
+# filename = open(sys.argv[1], 'r')
+# filename = filename.read().splitlines()
+# header = filename[0].split('\t')
+# del header[0]
+# c = len(header)
+# d = len(filename[1:])
+# genes = []
+# values = [[]] * c
+# # print (len(values))
+#
+# print (filename[1])
+# for z in filename[1]:
+#     print (z)
+#     z = z.split()
+#     # genes.append(z[0])
+#     # del z[0]
+#     # print (z)
+#
+# sys.exit()
+
+# count = 1
+# for z in range(1,len(filename)):
+#
+#     row = filename[z].split('\t')
+#     genes.append(row[0])
+#     del row[0]
+#     # sys.exit()
+#     for a, col in enumerate(row):
+#         # print (col)
+#
+#         values[a].append(col)
+#     print (values[z])
+#     count += 1
+#     if count == 2:
+#         break
+        # values[col].append(row[col])
+
+    # print (len(row))
+    # for col in range(len(row)):
+    #     if col == 0:
+    #         genes.append(row[col])
+    #     else:
+    #         # print (col)
+    #         values[col-1].append(float(row[col]))
+
+
+    # row = filename[z].split('\t')
+    # # genes.append(row[0])
+    # for m in range(len(row)):
+    #     if m == 0:
+    #         # print (row[m])
+    #         genes.append(row[m])
+    #     else:
+    #         # continue
+    #         values[m-1].append(row[m])
+    #         # print(m)#, row[m])
+    #     # print (row[m])
+    #     # values[m].extend(row[m+1])
+# print ("\n\n\n\n\n")
+# print (values, len(values))
+# print (values[0], len(values), len(values[1]))
+
+sys.exit()
+
+# for z in filename[1:]:
+#     z = z.split('\t')
+
+
+
+#
+# c = len(filename[1:])
+# dimension = len(header)
+# genes = []
+# values = []#[None] * c
+
+# values = zip(*[line.split()[1:] for line in filename[1:]])
+# for line in filename[1:]:
+#     line = line.split()[1:]
+
+# print (values)
+# sys.exit()
 
 for lines in filename[1:]:
     lines = lines.split()
     genes.append(lines[0])
-    values.append([float(x) for x in lines[1:]])
+    values.append(zip(*[float(x) for x in lines[1:]]))
 tissue_tpm = dict(zip(header, values))
+print (tissue_tpm)
+print (len(tissue_tpm))
+sys.exit()
 
 def euclidean(tissue_tpm):
     eucvalues = []

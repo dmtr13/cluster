@@ -2,46 +2,55 @@
 import math, sys
 import numpy as np
 import pandas as pd
-
-
-## this might be wrong, as we're looking into variations of the genes
-## between the tissues, so the matrix should be between genes and genes
-## instead of tissues and tissues
+import scipy.spatial.distance as spd
 
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 header = list(df)
 genes = df.index.tolist()
-c = len(genes)
-print (c)
+ar = np.array(df)
 
-def euclidean(vect1, vect2):
-    return ((vect1-vect2)**2)
+# def euclidean(vect1, vect2):
+#     return ((vect1-vect2)**2)
 
 euclid = []
 count = 1
 
 ##
-c = 2000
+c = len(genes)
+# c = 100
 ##
 
-output = open("../Data/HPA_Euclidean_1.tsv", 'w')
+reftype = str(sys.argv[2])
+logbook = open((str(sys.argv[1])+'.log'), 'w')
+eu_output = open("../Data/{}_Euclidean.tsv".format(reftype), 'w')
+manhattan_output = open("../Data/{}_Manhattan.tsv".format(reftype), 'w')
 
-output.write('DM\t'+'\t'.join(genes[:3])+'\n')
+eu_output.write('DM\t'+'\t'.join(genes[:c])+'\n')
+manhattan_output.write('DM\t'+'\t'.join(genes[:c])+'\n')
+
 for i in range(c):
     if count % 50 == 0:
         print ("{}/{} genes...".format(count, c-1))
     eu = []
-    output.write(str(genes[i])+'\t')
+    manhattan = []
+    eu_output.write(str(genes[i])+'\t')
+    manhattan_output.write(str(genes[i])+'\t')
     for j in range(c):
-
-        print ("Position [{}, {}]".format(i,j))
-        vect1 = df.iloc[i,]
-        vect2 = df.iloc[j,]
+        location = "Position [{}, {}]".format(i,j)
+        print (location)
+        logbook.write(location+'\n')
+        vect1 = ar[i,]
+        vect2 = ar[j,]
+        eu.append(spd.euclidean(vect1, vect2))
+        manhattan.append(spd.cityblock(vect1, vect2))
         # output.write(str(math.sqrt(sum(euclidean(vect1, vect2))))+'\n')
-        eu.append(math.sqrt(sum(euclidean(vect1, vect2))))
-    output.write('\t'.join([str(x) for x in eu])+'\n')
+        # eu.append(math.sqrt(sum(euclidean(vect1, vect2))))
+    eu_output.write('\t'.join([str(x) for x in eu])+'\n')
+    manhattan_output.write('\t'.join([str(x) for x in manhattan])+'\n')
     # euclid.append(eu)
     count += 1
+
+print ("Done!")
 
 # df = pd.DataFrame(euclid, index=genes, columns=genes)
 # df.to_csv('euclid.tsv', index=True, header=True, sep='\t')
@@ -49,7 +58,7 @@ for i in range(c):
 # print (df.iloc[0,])
 # print (df.iloc[0,15:18])
 
-sys.exit()
+# sys.exit()
 
 # with open('ex.txt') as f:
 #     print zip(*[line.split() for line in f])[1]
@@ -116,7 +125,7 @@ sys.exit()
 # print (values, len(values))
 # print (values[0], len(values), len(values[1]))
 
-sys.exit()
+# sys.exit()
 
 # for z in filename[1:]:
 #     z = z.split('\t')
@@ -135,41 +144,41 @@ sys.exit()
 
 # print (values)
 # sys.exit()
-
-for lines in filename[1:]:
-    lines = lines.split()
-    genes.append(lines[0])
-    values.append(zip(*[float(x) for x in lines[1:]]))
-tissue_tpm = dict(zip(header, values))
-print (tissue_tpm)
-print (len(tissue_tpm))
-sys.exit()
-
-def euclidean(tissue_tpm):
-    eucvalues = []
-    for t1 in tissue_tpm:
-        print ("Calculating %s set..." % t1)
-        for t2 in tissue_tpm:
-            theset = [(a-b)**2 for a, b in
-                        zip(tissue_tpm[t1], tissue_tpm[t2])]
-            theset = math.sqrt(sum(theset))
-            eucvalues.append(theset)
-    eucvalues = np.array(eucvalues).reshape((c,c))
-    return eucvalues
-
-def manhattan(tissue_tpm):
-    eucvalues = []
-    for t1 in tissue_tpm:
-        print ("Calculating %s set..." % t1)
-        for t2 in tissue_tpm:
-            theset = [(abs(a-b)) for a, b in
-                        zip(tissue_tpm[t1], tissue_tpm[t2])]
-            theset = sum(theset)
-            eucvalues.append(theset)
-    eucvalues = np.array(eucvalues).reshape((c,c))
-    print (eucvalues)
-
-manhattan(tissue_tpm)
+#
+# for lines in filename[1:]:
+#     lines = lines.split()
+#     genes.append(lines[0])
+#     values.append(zip(*[float(x) for x in lines[1:]]))
+# tissue_tpm = dict(zip(header, values))
+# print (tissue_tpm)
+# print (len(tissue_tpm))
+# sys.exit()
+#
+# def euclidean(tissue_tpm):
+#     eucvalues = []
+#     for t1 in tissue_tpm:
+#         print ("Calculating %s set..." % t1)
+#         for t2 in tissue_tpm:
+#             theset = [(a-b)**2 for a, b in
+#                         zip(tissue_tpm[t1], tissue_tpm[t2])]
+#             theset = math.sqrt(sum(theset))
+#             eucvalues.append(theset)
+#     eucvalues = np.array(eucvalues).reshape((c,c))
+#     return eucvalues
+#
+# def manhattan(tissue_tpm):
+#     eucvalues = []
+#     for t1 in tissue_tpm:
+#         print ("Calculating %s set..." % t1)
+#         for t2 in tissue_tpm:
+#             theset = [(abs(a-b)) for a, b in
+#                         zip(tissue_tpm[t1], tissue_tpm[t2])]
+#             theset = sum(theset)
+#             eucvalues.append(theset)
+#     eucvalues = np.array(eucvalues).reshape((c,c))
+#     print (eucvalues)
+#
+# manhattan(tissue_tpm)
 
 # if __name__ == '__main__':
 #     euclidean("../Data/HPA_processed.tsv")

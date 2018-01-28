@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
+import sys
 import numpy as np
 from scipy.spatial.distance import squareform as ssds
 from scipy.cluster.hierarchy import dendrogram, linkage
+from scipy.cluster import hierarchy
 import matplotlib.pyplot as plt
 
 def strip_first_col(fname, delimiter='\t'):
@@ -11,18 +13,16 @@ def strip_first_col(fname, delimiter='\t'):
                yield line.split(delimiter, 1)[1]
             except IndexError:
                continue
-arr = np.loadtxt(strip_first_col("HPA_Euclidean.tsv"), skiprows=1)
-
-clear
+arr = np.loadtxt(strip_first_col(sys.argv[1]), skiprows=1)
 condensed = ssds(arr)
-condensed
 
-Z = hierarchy.linkage(condensed, 'ward')
-dn = hierarchy.dendrogram(Z)
+
+Z = linkage(condensed, 'ward')
+dn = dendrogram(Z)
 
 hierarchy.set_link_color_palette(['m','c','y','k'])
 fig, axes = plt.subplots(1,2, figsize=(8,3))
-dn1 = hierarchy.dendrogram(Z, ax=axes[0], above_threshold_color='y', orientation='top')
+dn1 = dendrogram(Z, ax=axes[0], above_threshold_color='y', orientation='top')
 # dn2 = hierarchy.dendrogram(Z, ax=axes[1], above_threshold_color="#bcbddc", orientation='right')
 hierarchy.set_link_color_palette(None)
 plt.show()

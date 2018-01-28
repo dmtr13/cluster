@@ -1,4 +1,4 @@
-#!/bin/usr/env python3
+#!/usr/bin/env python3
 import math, sys
 import numpy as np
 import pandas as pd
@@ -32,11 +32,12 @@ for i in range(c):
 
     manhattan = []
     manhattan_output.write(str(genes[i])+'\t')
+
+    vect1 = ar[i,]
     for j in range(c):
         location = "[{}, {}]".format(i,j)
         print ("Position: {}".format(location))
         logbook.write(location+'\n')
-        vect1 = ar[i,]
         vect2 = ar[j,]
         eu.append(spd.euclidean(vect1, vect2))
         manhattan.append(spd.cityblock(vect1, vect2))

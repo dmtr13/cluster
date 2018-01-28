@@ -2,7 +2,6 @@
 import numpy as np
 from scipy.spatial.distance import squareform as ssds
 from scipy.cluster.hierarchy import dendrogram, linkage
-from scipy.cluster import hierarchy
 import matplotlib.pyplot as plt
 
 def strip_first_col(fname, delimiter='\t'):
@@ -18,16 +17,13 @@ clear
 condensed = ssds(arr)
 condensed
 
-Z = linkage(condensed, 'ward')
-Z
-
-hierarchy.dendrogram(Z)
+Z = hierarchy.linkage(condensed, 'ward')
 dn = hierarchy.dendrogram(Z)
 
 hierarchy.set_link_color_palette(['m','c','y','k'])
 fig, axes = plt.subplots(1,2, figsize=(8,3))
 dn1 = hierarchy.dendrogram(Z, ax=axes[0], above_threshold_color='y', orientation='top')
-dn2 = hierarchy.dendrogram(Z, ax=axes[1], above_threshold_color="#bcbddc", orientation='right')
+# dn2 = hierarchy.dendrogram(Z, ax=axes[1], above_threshold_color="#bcbddc", orientation='right')
 hierarchy.set_link_color_palette(None)
 plt.show()
 

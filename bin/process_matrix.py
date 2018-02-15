@@ -6,13 +6,6 @@ from sklearn.preprocessing import MinMaxScaler, normalize
 
 print ("Processing matrix {}".format(sys.argv[1]))
 
-def strip_first_col(fname, delimiter='\t'):
-    with open(fname, 'r') as fin:
-        for line in fin:
-            try:
-               yield line.split(delimiter, 1)[1]
-            except IndexError:
-               continue
 # pd.set_option("display.precision", 10)
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 

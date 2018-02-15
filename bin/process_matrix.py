@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import sys
+import sys, os
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler, normalize
@@ -13,20 +13,19 @@ def strip_first_col(fname, delimiter='\t'):
                yield line.split(delimiter, 1)[1]
             except IndexError:
                continue
-# arr = np.loadtxt(strip_first_col(sys.argv[1]), skiprows=1)
-# arr = normalize(arr, axis=1, norm='l1')
-# print (arr)
-
+# pd.set_option("display.precision", 10)
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
-# print (df.iloc[[0]])
-for i in range(len(df)):
-    maxval = (df.iloc[[i]]).idmax()
-    print (maxval)
-    # print (df.iloc[[i]])
 
+def normalise(inlist):
+    maxi = max(inlist)
+    newlist = [i/maxi for i in inlist]
+    return newlist
+x = df.values
+x_scaled = np.array([normalise(z) for z in x])
+df = pd.DataFrame(x_scaled, columns=df.columns, index=df.index)
 
-# scaler = MinMaxScaler()
-# scaled = scaler.fit_transform(df[1])
-# print (scaled[0])
-# df.loc[:,:] = scaled
-# print (df[0])
+filename, file_ext = os.path.splitext(sys.argv[1])
+outname = filename+"_Normalised"+file_ext
+df.to_csv(path_or_buf=outname, sep='\t')
+
+print ("Done!")

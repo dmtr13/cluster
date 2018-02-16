@@ -20,14 +20,16 @@ for z, line in enumerate(matrix):
     ## at parsing a file with loads of lines
     if z == 0: ## Collect information on header aka genes on the columns
         line = line.rstrip('\n').split('\t')
-        if not line[0] == '' or line[0] == 'DM':
+        if line[0] == '' or line[0] == 'DM':
+            del line[0] ## Removing an empty tab char or 'DM'
             header.extend(line) ##
             n_gene = len(header)
         else:
-            del line[0] ## Removing an empty tab char or 'DM'
-            header.extend(line)  
+            header.extend(line)
             n_gene = len(header)
     else:
+        if z % 250 == 0:
+            print ("{}/{} genes processed.".format(z, n_gene))
         line = line.rstrip('\n').split('\t')
         gene, vals = line[0], [float(x) for x in line[1:]]
         assert len(header) == len(vals), "Length not equal"

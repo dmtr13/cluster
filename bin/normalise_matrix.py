@@ -2,7 +2,7 @@
 import sys, os, time
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import MinMaxScaler, normalize
+from sklearn.preprocessing import normalize
 
 """
 This modular script takes in a generated distance matrix file and normalise it.
@@ -14,7 +14,7 @@ start = time.time()
 # pd.set_option("display.precision", 10)
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 
-def normalise(inlist):
+def normalise(inlist): ## Though not used in the end.
     """
     Normalisation done by dividing each datapoint by the datapoint with the
     highest value in one particular set/list.

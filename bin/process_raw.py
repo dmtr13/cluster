@@ -1,6 +1,12 @@
 #!/usr/bin/env python3
-import sys
+import sys, time
 import pandas as pd
+
+start = time.time()
+"""
+A non-modular script that converts the Human Protein Atlas' RNA counts from
+37 different tissues and GTEx's RNA counts into a tabular format.
+"""
 
 ### HUMAN PROTEIN ATLAS
 print ("Processing HPA...")
@@ -63,5 +69,5 @@ with open("../Reference/GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tp
         proc_gtex.write(i+'\n')
     print ("Excluded {} non-protein coding genes.".format(npcg_count))
 
-
-print ("Done!")
+end = time.gmtime(time.time()-start)
+print ("Completed in {}.".format(time.strftime("%Hh %Mm %Ss", end)))

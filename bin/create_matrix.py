@@ -1,8 +1,14 @@
 #!/usr/bin/env python3
-import math, sys
+import math, sys, time
 import numpy as np
 import pandas as pd
 import scipy.spatial.distance as spd
+
+"""
+A modular script that reads in the processed dataset (via process_raw.py)
+and generates the distance matrices using Euclidean and Manhattan metrics.
+"""
+start = time.time()
 
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 header = list(df)
@@ -10,11 +16,11 @@ genes = df.index.tolist()
 ar = np.array(df)
 
 ##
-c = 50#len(genes)
+c = len(genes)
 ##
 
 reftype = str(sys.argv[2])
-logbook = open((str(sys.argv[1])+'.log'), 'w')
+# logbook = open((str(sys.argv[1])+'.log'), 'w')
 
 eu_output = open("../Data/{}_Euclidean.tsv".format(reftype), 'w')
 eu_output.write('\t'.join(genes[:c])+'\n')
@@ -35,9 +41,9 @@ for i in range(c):
 
     vect1 = ar[i,]
     for j in range(c):
-        location = "[{}, {}]".format(i,j)
+        location = "[{}, {}]".format(i+1,j+1)
         print ("Position: {}".format(location))
-        logbook.write(location+'\n')
+        # logbook.write(location+'\n')
         vect2 = ar[j,]
         eu.append(spd.euclidean(vect1, vect2))
         manhattan.append(spd.cityblock(vect1, vect2))
@@ -45,4 +51,8 @@ for i in range(c):
     manhattan_output.write('\t'.join([str(x) for x in manhattan])+'\n')
     count += 1
 
-print ("Done!")
+eu_output.close()
+manhattan_output.close()
+
+end = time.gmtime(time.time()-start)
+print ("Completed in {}.".format(time.strftime("%Hh %Mm %Ss", end)))

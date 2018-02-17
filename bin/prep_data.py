@@ -41,8 +41,8 @@ def normalise(inlist):
 count = 1
 # try:
 for i in range(c):
-    # if count % 50 == 0:
-    #     print ("{}/{} genes...".format(count, c))
+    if count % 50 == 0:
+        print ("{}/{} genes...".format(count, c))
 
     eu = []
     eu_output.write(str(genes[i])+'\t')
@@ -52,8 +52,8 @@ for i in range(c):
 
     vect1 = ar[i,]
     for j in range(c):
-        # location = "[{}, {}]".format(i+1,j+1)
-        # print ("Position: {}".format(location))
+        location = "[{}, {}]".format(i+1,j+1)
+        print ("Position: {}".format(location))
         vect2 = ar[j,]
         eu.append(spd.euclidean(vect1, vect2))
         manhattan.append(spd.cityblock(vect1, vect2))
@@ -69,13 +69,13 @@ for i in range(c):
         manhattan_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(manhattan[k])+'\n')
 
     count += 1
-# except:
-    # print ("\nERROR!")
-    # logbook = open((str(sys.argv[1])+'.log'), 'w')
-    # print ("No. of genes: {}".format(c))
-    # logbook.write("No. of genes{}".format(c))
-    # print ("Last location: {}".format(location))
-    # logbook.write("Last location: {}".format(location))
+except:
+    print ("\nERROR!")
+    logbook = open((str(sys.argv[1])+'.log'), 'w')
+    print ("No. of genes: {}".format(c))
+    logbook.write("No. of genes{}".format(c))
+    print ("Last location: {}".format(location))
+    logbook.write("Last location: {}".format(location))
 
 eu_output.close()
 eu_mcl.close()
@@ -139,11 +139,4 @@ def incov(filehandle):
 incov(eu_output_name)
 incov(manhattan_output_name)
 
-
-# incov_output = open("../Data/{}_covariance.tsv".format(reftype), 'w')
-# incov_output.write('\t'.join(genes[:c])+'\n')
-# cov_mcl = open("../Data/{}_covarianceMCL.tsv".format(reftype), 'w')
-
-
-# incov_output.close()
-# incov_mcl.close()
+print ("Done!")

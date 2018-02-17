@@ -39,36 +39,39 @@ def normalise(inlist):
     return [(i-min(inlist))/(max(inlist)-min(inlist)) for i in inlist]
 
 count = 1
-# try:
-for i in range(c):
-    if count % 50 == 0:
-        print ("{}/{} genes...".format(count, c))
+try:
+    for i in range(c):
+        eu = []
+        eu_output.write(str(genes[i])+'\t')
 
-    eu = []
-    eu_output.write(str(genes[i])+'\t')
+        manhattan = []
+        manhattan_output.write(str(genes[i])+'\t')
 
-    manhattan = []
-    manhattan_output.write(str(genes[i])+'\t')
+        vect1 = ar[i,]
+        for j in range(c):
+            location = "[{}, {}]".format(i+1,j+1)
+            print ("Position: {}".format(location))
+            vect2 = ar[j,]
+            eu.append(spd.euclidean(vect1, vect2))
+            manhattan.append(spd.cityblock(vect1, vect2))
 
-    vect1 = ar[i,]
-    for j in range(c):
-        location = "[{}, {}]".format(i+1,j+1)
-        print ("Position: {}".format(location))
-        vect2 = ar[j,]
-        eu.append(spd.euclidean(vect1, vect2))
-        manhattan.append(spd.cityblock(vect1, vect2))
+        if count % 500 == 0:
+            print ("{}/{} genes...".format(count, c))
+        print ("Normalising Euclidean")
+        eu = normalise(eu)
+        eu_output.write('\t'.join([str(x) for x in eu])+'\n')
 
-    eu = normalise(eu)
-    eu_output.write('\t'.join([str(x) for x in eu])+'\n')
+        print ("Normalising Manhattan")
+        manhattan = normalise(manhattan)
+        manhattan_output.write('\t'.join([str(x) for x in manhattan])+'\n')
 
-    manhattan = normalise(manhattan)
-    manhattan_output.write('\t'.join([str(x) for x in manhattan])+'\n')
-
-    for k in range(i, c):
-        eu_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(eu[k])+'\n')
-        manhattan_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(manhattan[k])+'\n')
-
-    count += 1
+        print ("Preparing MCL input...")
+        for k in range(i, c):
+            if k % 500 == 0:
+                print ("MCL Input Set: {}/{}".format(k, c))
+            eu_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(eu[k])+'\n')
+            manhattan_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(manhattan[k])+'\n')
+        count += 1
 except:
     print ("\nERROR!")
     logbook = open((str(sys.argv[1])+'.log'), 'w')
@@ -76,6 +79,8 @@ except:
     logbook.write("No. of genes{}".format(c))
     print ("Last location: {}".format(location))
     logbook.write("Last location: {}".format(location))
+    print ("Last MCL: i{}, k{}".format(i,k))
+    logbook.write("Last MCL: i{}, k{}".format(i,k))
 
 eu_output.close()
 eu_mcl.close()
@@ -92,6 +97,7 @@ print ("Distance matrix of {} for Euclidean & Manhattan metrics completed in {}.
 ################################################################################
 def incov(filehandle):
     start = time.time()
+    print ("Processing {} MCL...".format(filehandle))
     filename = filehandle+'.tsv'
     df = pd.read_csv(filename, sep='\t', header=0, index_col=0)
     ## Calculating covariance
@@ -102,11 +108,11 @@ def incov(filehandle):
     x_scaled = np.array([normalise(z) for z in df.values])
     df = pd.DataFrame(x_scaled, columns=df.columns, index=df.index)
     ## Writing into file
-    outfile = filehandle+'_InCov'
+    outfile = "../Data/{}_InCov".format(reftype)
     df.to_csv(path_or_buf=outfile+'.tsv', sep='\t')
 
     outfile = open(outfile+'.tsv', 'r')
-    outname = open(filehandle+"MCL.tsv", 'w')
+    outname = open("../Data/{}_InCov_MCL.tsv".format(reftype), 'w')
     header = list()
     for z, line in enumerate(outfile):
         ## this or readline is apparently better

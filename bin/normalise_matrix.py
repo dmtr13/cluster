@@ -14,14 +14,8 @@ start = time.time()
 # pd.set_option("display.precision", 10)
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 
-def normalise(inlist): ## Though not used in the end.
-    """
-    Normalisation done by dividing each datapoint by the datapoint with the
-    highest value in one particular set/list.
-    """
-    maxi = max(inlist)
-    newlist = [i/maxi for i in inlist]
-    return newlist
+def normalise(inlist):
+    return [(i-min(inlist))/(max(inlist)-min(inlist)) for i in inlist]
 
 x_scaled = np.array([normalise(z) for z in df.values])
 df = pd.DataFrame(x_scaled, columns=df.columns, index=df.index)

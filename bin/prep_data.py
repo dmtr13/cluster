@@ -10,9 +10,10 @@ and generates a normalised matrix for Euclidean and Manhattan metrics and also
 the three-column format accepted by MCL.
 """
 print ("Creating distance matrices using Euclidean and Manhattan metrics...")
+df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 start = time.time()
 
-df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
+
 header = list(df)
 genes = df.index.tolist()
 ar = np.array(df)
@@ -53,10 +54,8 @@ try:
             print ("Position: {}".format(location))
             vect2 = ar[j,]
             eu.append(spd.euclidean(vect1, vect2))
-            manhattan.append(spd.cityblock(vect1, vect2))
+            # manhattan.append(spd.cityblock(vect1, vect2))
 
-        if count % 500 == 0:
-            print ("{}/{} genes...".format(count, c))
         print ("Normalising Euclidean")
         eu = normalise(eu)
         eu_output.write('\t'.join([str(x) for x in eu])+'\n')
@@ -67,20 +66,23 @@ try:
 
         print ("Preparing MCL input...")
         for k in range(i, c):
-            if k % 500 == 0:
+            if k % 3000 == 0:
                 print ("MCL Input Set: {}/{}".format(k, c))
             eu_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(eu[k])+'\n')
             manhattan_mcl.write(genes[i]+'\t'+genes[k]+'\t'+str(manhattan[k])+'\n')
+
+        if count % 5000 == 0:
+            print ("{}/{} genes...".format(count, c))
         count += 1
 except:
     print ("\nERROR!")
     logbook = open((str(sys.argv[1])+'.log'), 'w')
     print ("No. of genes: {}".format(c))
-    logbook.write("No. of genes{}".format(c))
+    logbook.write("No. of genes{}\n".format(c))
     print ("Last location: {}".format(location))
-    logbook.write("Last location: {}".format(location))
+    logbook.write("Last location: {}\n".format(location))
     print ("Last MCL: i{}, k{}".format(i,k))
-    logbook.write("Last MCL: i{}, k{}".format(i,k))
+    logbook.write("Last MCL: i{}, k{}\n".format(i,k))
 
 eu_output.close()
 eu_mcl.close()

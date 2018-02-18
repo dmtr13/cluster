@@ -31,12 +31,13 @@ eu_mcl_name = "../Data/{}_EuclideanMCL_MP".format(reftype)
 eu_mcl = open(eu_mcl_name+'.tsv', 'w')
 
 def calc_matrix(enum, array):
+    print ("Processing {}/{}...".format(enum, c))
     eu = []
     for j in range(c):
         vect2 = ar[j, ]
         eu.append(spd.euclidean(array, vect2))
     if (enum+1) % 25 == 0:
-        print ("Normalising Euclidean {}/{}".format(enum+1, c))
+        print ("Checkpoint: {}/{}".format(enum+1, c))
     eu = normalise(eu)
     return [enum, genes[enum], eu]
 

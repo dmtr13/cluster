@@ -18,16 +18,19 @@ genes = df.index.tolist()
 ar = np.array(df)
 
 ##
-c = 50#len(genes)
+c = len(genes)
 ##
 
 if "HPA" in str(sys.argv[1]):
     reftype = "HPA"
 elif "GTEx" in str(sys.argv[1]):
     reftype = "GTEx"
+else:
+    namn = os.path.basename(sys.argv[1])
+    reftype = namn.split('.')[0]
 
-eu_output_name = "../Data/{}_Euclidean".format(reftype)
-eu_output = open(eu_output_name+'.tsv', 'w')
+# eu_output_name = "../Data/{}_Euclidean".format(reftype)
+# eu_output = open(eu_output_name+'.tsv', 'w')
 # eu_output.write('\t'.join(genes[:c])+'\n')
 # eu_mcl_name = "../Data/{}_EuclideanMCL".format(reftype)
 # eu_mcl = open(eu_mcl_name+'.tsv', 'w')
@@ -49,9 +52,11 @@ def calc_matrix(enum, array):
         print ("CHECKPOINT {}/{}...".format(enum+1, c))
     else:
         print ("Processing {}/{}...".format(enum+1, c))
+    eu = []
     for j in range(c):
         vect2 = ar[j, ]
-        eu_out[enum, j] = spd.euclidean(array, vect2)
+        eu.append(spd.euclidean(array, vect2))
+    eu_out[enum, ] = eu
     return True
 
 # count = 1
@@ -102,8 +107,13 @@ def calc_matrix(enum, array):
 results = Parallel(n_jobs=-2)(delayed(calc_matrix) \
                     (z, vect1) for z, vect1 in enumerate(ar) \
                     if z < c)
-
+print (eu_out.shape)
+# print (type(eu_out))
+# eu_out = np.memmap(eu_out_path, dtype=float, shape=(c,c), mode='r')
+# print (type(eu_out))
+# print ("SHAPE: {}".eu_out.shape)
 df_eu = pd.DataFrame(eu_out, columns=genes[:c], index=genes[:c])
+df_eu.to_csv(path_or_buf=reftype+"_Euclidean.tsv", sep='\t')
 
 try:
     shutil.rmtree(path)

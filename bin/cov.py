@@ -16,7 +16,7 @@ df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 header = list(df)
 genes = df.index.tolist()
 ar = np.array(df)
-c = 50#len(genes)
+c = len(genes)
 
 if "HPA" in str(sys.argv[1]):
     reftype = "HPA"
@@ -48,26 +48,28 @@ def calc_matrix(enum, array): ## COVARIANCE
         covariance = np.cov(array, vect2, bias=True)
         # print (enum, j, covariance)
         # covar[enum, j] == covariance[1,0]
-        temp.append(covariance[1,0])
+        temp.append(covariance[1,0]) ## eqv to [0,1] as both (a,b)
     covar[enum, ] = temp
     return True
 #
-results = Parallel(n_jobs=-2)(delayed(calc_matrix) \
+results = Parallel(n_jobs=-1)(delayed(calc_matrix) \
                     (z, vect1) for z, vect1 in enumerate(ar) \
                     if z < c)
 
 print ("Inversing covariance matrix...")
 incov = np.linalg.inv(covar)
+np.save("../Data/HPA_Incov.npy", incov)
 incov = np.array([normalise(x) for x in incov])
-try:
-    shutil.rmtree(path)
-    print ("Temporary file deleted.")
-except:
-    pass
+np.save("../Data/HPA_Incov_N.npy", incov)
+# try:
+#     shutil.rmtree(path)
+#     print ("Temporary file deleted.")
+# except:
+#     pass
 
-df_incov = pd.DataFrame(incov, columns=genes[:c], index=genes[:c])
-df_incov.to_csv(path_or_buf=eu_output_name+'.tsv', sep='\t')
-print (df_incov.iloc[:3, :3])
+# df_incov = pd.DataFrame(incov, columns=genes[:c], index=genes[:c])
+# df_incov.to_csv(path_or_buf=eu_output_name+'.tsv', sep='\t')
+# print (df_incov.iloc[:3, :3])
 # with open(eu_mcl_name+'.tsv', 'w') as o:
 #     for z in range(c):
 

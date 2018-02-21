@@ -34,6 +34,7 @@ for z, line in enumerate(matrix):
         gene, vals = line[0], [float(x) for x in line[1:]]
         assert len(header) == len(vals), "Length not equal"
         for n in range(z-1, n_gene):
+        # for n in range(n_gene):
             outname.write(gene+'\t'+header[n]+'\t'+str(vals[n])+'\n')
 matrix.close()
 outname.close()

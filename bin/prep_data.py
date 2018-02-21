@@ -107,13 +107,9 @@ def calc_matrix(enum, array):
 results = Parallel(n_jobs=-2)(delayed(calc_matrix) \
                     (z, vect1) for z, vect1 in enumerate(ar) \
                     if z < c)
-print (eu_out.shape)
-# print (type(eu_out))
-# eu_out = np.memmap(eu_out_path, dtype=float, shape=(c,c), mode='r')
-# print (type(eu_out))
-# print ("SHAPE: {}".eu_out.shape)
+
 df_eu = pd.DataFrame(eu_out, columns=genes[:c], index=genes[:c])
-df_eu.to_csv(path_or_buf=reftype+"_Euclidean.tsv", sep='\t')
+df_eu.to_csv(path_or_buf="../Data/"+reftype+"_Euclidean.tsv", sep='\t')
 
 try:
     shutil.rmtree(path)

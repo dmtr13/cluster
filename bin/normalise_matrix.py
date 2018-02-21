@@ -9,7 +9,7 @@ from joblib import Parallel, delayed
 This modular script takes in a generated distance matrix file and normalise it.
 """
 
-print ("Processing matrix {}".format(sys.argv[1]))
+print ("Normalising matrix {}".format(sys.argv[1]))
 start = time.time()
 
 # pd.set_option("display.precision", 10)
@@ -29,12 +29,18 @@ def norm_matrix(enum, array):
         print ("CHECKPOINT {}/{}...".format(enum+1, c))
     else:
         print ("Processing {}/{}...".format(enum+1, c))
-    outfile[enum, ] = normalise(array)
+    normm = np.linalg.norm(array, ord=2)
+    outfile[enum, ] = [x/normm for x in array]
     return True
 
-results = Parallel(n_jobs=-1)(delayed(norm_matrix) \
+results = Parallel(n_jobs=-2)(delayed(norm_matrix) \
                     (z, vect1) for z, vect1 in enumerate(ar) \
                     if z < c)
+# print ("Normalising...")
+# outfile = normalize(ar)
+
+print ("Creating similarity matrix...")
+outfile = 1-outfile
 
 # x_scaled = np.array([normalise(z) for z in df.values])
 df_N = pd.DataFrame(outfile, columns=df.columns, index=df.index)

@@ -1,5 +1,7 @@
 # Workflow   
 
+M = 2,000
+
 Step | Action | [Script](https://github.com/dmtr13/cluster/tree/master/bin) | Input | Output  
 :---: | --- | :---: | --- | ---   
 1 | Prepare RNAseq raw count | process_raw.py | raw count from tissues |  matrix of n_genes x n_tissues  

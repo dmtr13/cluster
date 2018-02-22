@@ -10,7 +10,7 @@ A modular script that reads in the processed dataset (via process_raw.py)
 and generates a normalised matrix for Euclidean and Manhattan metrics and also
 the three-column format accepted by MCL.
 """
-print ("Creating distance matrices using Euclidean and Manhattan metrics...")
+print ("Creating distance matrices using Euclidean metric...")
 df = pd.read_csv(sys.argv[1], sep='\t', header=0, index_col=0)
 start = time.time()
 header = list(df)

@@ -24,7 +24,7 @@ for i in range(c):
     if not no in temp_no and no != c:
         temp_no.append(no)
 
-print (len(temp_no))
+assert ns == len(temp_no), "WRONG LENGTH"
 
 n_ar = np.array([ar[z, ] for z in temp_no]) # new array
 n_gen = [genes[z] for z in temp_no]

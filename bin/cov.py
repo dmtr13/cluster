@@ -22,7 +22,9 @@ if "HPA" in str(sys.argv[1]):
     reftype = "HPA"
 elif "GTEx" in str(sys.argv[1]):
     reftype = "GTEx"
-
+else:
+    namn = os.path.basename(sys.argv[1])
+    reftype = namn.split('.')[0]
 
 def normalise(inlist):
     return [(i-min(inlist))/(max(inlist)-min(inlist)) for i in inlist]

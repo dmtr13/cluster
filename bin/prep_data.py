@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
 import scipy.spatial.distance as spd
+from scipy.stats import pearsonr as ssp
 
 """
 A modular script that reads in the processed dataset (via process_raw.py)
@@ -55,6 +56,8 @@ def calc_matrix(enum, array):
     eu = []
     for j in range(c):
         vect2 = ar[j, ]
+        # print (ssp(array,vect2))
+        # eu.append(ssp(array,vect2)[0])
         eu.append(spd.euclidean(array, vect2))
     eu_out[enum, ] = eu
     return True

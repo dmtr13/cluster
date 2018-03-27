@@ -2,7 +2,7 @@
 import math, sys, time, os, tempfile, shutil
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import normalize
+from sklearn.preprocessing import normalize, minmax_scale
 from joblib import Parallel, delayed
 
 """
@@ -31,6 +31,11 @@ def norm_matrix(enum, array):
         print ("Processing {}/{}...".format(enum+1, c))
     normm = np.linalg.norm(array, ord=2)
     outfile[enum, ] = [x/normm for x in array]
+    # outfile[enum, ] = [((1 - (x/normm)) * normm) for x in array]
+    # for x in array:
+    #     print (x, x/normm)
+    # outfile[enum, ] = minmax_scale(array)
+    # sys.exit()
     return True
 
 results = Parallel(n_jobs=-2)(delayed(norm_matrix) \
@@ -38,6 +43,7 @@ results = Parallel(n_jobs=-2)(delayed(norm_matrix) \
                     if z < c)
 # print ("Normalising...")
 # outfile = normalize(ar)
+print (outfile[-2:,-2:])
 
 print ("Creating similarity matrix...")
 outfile = 1-outfile

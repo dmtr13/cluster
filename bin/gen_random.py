@@ -38,5 +38,5 @@ n_ar = np.array([ar[z, ] for z in temp_no]) # new array
 n_gen = [genes[z] for z in temp_no]
 df_R = pd.DataFrame(n_ar, columns=header, index=n_gen)
 
-df_R.to_csv("../Data/2kR_{}.tsv".format(reftype), sep='\t')
+df_R.to_csv("../Data/{}_{}.tsv".format(sys.argv[2], reftype), sep='\t')
 print ("DONE")

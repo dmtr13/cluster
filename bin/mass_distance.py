@@ -24,11 +24,11 @@ reftype = str(sys.argv[2])
 def normalise(inlist):
     return [(i-min(inlist))/(max(inlist)-min(inlist)) for i in inlist]
 
-eu_output_name = "../Data/MD/{}_Euclidean".format(reftype)
+eu_output_name = "../Data/MD/{}_{}_Euclidean_Norm".format(reftype, c)
 eu_output = open(eu_output_name+'.tsv', 'w')
 eu_output.write('\t'.join(genes[:c])+'\n')
 
-eu_mcl_name = "../Data/MD/{}_EuclideanMCL".format(reftype)
+eu_mcl_name = "../Data/MD/{}_{}_EuclideanMCL_Norm".format(reftype, c)
 eu_mcl = open(eu_mcl_name+'.tsv', 'w')
 
 def mass_distance(v1, v2):
@@ -41,11 +41,11 @@ def mass_distance(v1, v2):
         maximum = max(v1[x], v2[x])
         v1v2 = np.concatenate((v1, v2))
         freq_x = len((np.where((v1v2 >= minimum) &
-                                    (v1v2 <= maximum))[0]))
+                                (v1v2 <= maximum))[0]))
         ## logx(A)+logx(B)=logx(A*B)
         MDscore *= freq_x
     ## MDScore = - (sum from i=1 to d log(MASS))
-    MDscore = -(math.log10(MDscore))
+    MDscore = math.log10(MDscore)
     return MDscore
 
 def calc_matrix(enum, array):
@@ -57,6 +57,7 @@ def calc_matrix(enum, array):
     if (enum+1) % 25 == 0:
         print ("Checkpoint: {}/{}".format(enum+1, c))
     eu = normalise(eu)
+    eu = [1-x for x in eu]
     return [enum, genes[enum], eu]
 
 results = Parallel(n_jobs=-1)(delayed(calc_matrix) \

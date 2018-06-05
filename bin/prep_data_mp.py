@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-import math, sys, time, os
+### (C) 2018 - Dimitri Wirjowerdojo
+### https://github.com/dmtr13/cluster/
+import math, sys, time, os, argparse
 import numpy as np
 import pandas as pd
 # import multiprocessing as mp
@@ -19,8 +21,17 @@ header = list(df)
 genes = df.index.tolist()
 ar = np.array(df)
 c = len(genes)
-top10 = math.ceil(c*0.9) ## 90% cut-off threshold
-reftype = str(sys.argv[2])
+
+### Input arguments
+parser = argparse.ArgumentParser()
+parser.add_argument('-t', '--threshold', help="Cut off threshold. Default = 0.9."
+                    type=float, default=0.9)
+parser.add_argument('-ref', '--reftype', help="Source of data. Default = HPA."
+                    type=str, default="HPA")
+top10 = math.ceil(c*args.threshold)
+reftype = str(args.reftype)
+#top10 = math.ceil(c*0.9) ## 90% cut-off threshold
+#reftype = str(sys.argv[2])
 
 def normalise(inlist):
     return [(i-min(inlist))/(max(inlist)-min(inlist)) for i in inlist]
@@ -53,6 +64,10 @@ def prune_top10pc(vect):
 
 def normalise_by_max(inlist):
     return [i-max(inlist) for i in inlist]
+
+def similarity_score(vector):
+    """ Subtract the largest element of a vector by each element giving
+    """
 
 eu_output_name = "../Data/{}_RelEuclidean".format(reftype)
 eu_output = open(eu_output_name+'.tsv', 'w')

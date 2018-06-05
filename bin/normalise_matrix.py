@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+### (C) 2018 - Dimitri Wirjowerdojo #######
+### https://github.com/dmtr13/cluster/ ####
 import math, sys, time, os, tempfile, shutil
 import pandas as pd
 import numpy as np

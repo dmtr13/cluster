@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-### (C) 2018 - Dimitri Wirjowerdojo
-### https://github.com/dmtr13/cluster/
+### (C) 2018 - Dimitri Wirjowerdojo #######
+### https://github.com/dmtr13/cluster/ ####
 import math, sys, time, os, argparse
 import numpy as np
 import pandas as pd

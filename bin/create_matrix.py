@@ -23,7 +23,7 @@ lof = """\t[1] Relative Euclidean \n
 ### Input arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', required=True, help="Input file")
-parser.add_argument('-t', '--threshold', help="Cut off threshold. Default = 0.9.",
+parser.add_argument('-t', '--threshold', help="Cut off threshold. Default = 10\% highest.",
                     type=float, default=0.9)
 parser.add_argument('-ref', '--reftype', help="Source of data. Default = HPA.",
                     type=str, default="HPA")
@@ -83,10 +83,6 @@ def mass_distance(v1, v2):
     MDscore = math.log10(MDscore)
     return MDscore
 
-def Manhattan(vect1, vect2):
-    print ("Manhattan!")
-    sys.exit()
-
 def prune_top10pc(vect):
     """ Takes the values of the top Y percent, everything else will be 0.
     """ ### Y <-- threshold value
@@ -117,11 +113,17 @@ def calc_matrix(enum, array):
             eu.append(mass_distance(array, vect2))
         elif args.function == 4:
             eu.append(spd.cityblock(array, vect2))
+        else:
+            print ("Unspecified function.")
+            sys.exit()
     # print (enum, eu)
+    ### Scale each row to create similarity matrix by subtracting the max of
+    ### each row with each element in the row. Therefore, the furthest will have
+    ### a similarity of 0.
     eu = [max(eu) - el for el in eu]
     eu = prune_top10pc(eu)
     # print (enum, eu)
-    if (enum+1) % 25 == 0:
+    if (enum+1) % 50 == 0:
         print ("Checkpoint: {}/{}".format(enum+1, c))
     return [enum, genes[enum], eu]
 

@@ -15,7 +15,7 @@ format accepted by MCL. Multiprocessing enabled.
 """
 
 ### List of Functions
-lof = """\t[1] Relative Euclidean \n
+lof = """\t[1] Relative-Euclidean \n
 \t[2] Euclidean \n
 \t[3] Mass-Distance \n
 \t[4] Manhattan"""
@@ -33,7 +33,7 @@ parser.add_argument('-f', '--function', help="""Function to create the similarit
 parser.add_argument('-o', '--output', help="""Output format [1] Matrix [2] MCL ABC [3] Both""", default=1)
 args = parser.parse_args()
 
-lof = {1:"Relative_Euclidean", 2:"Euclidean", 3:"Mass-Distance", 4:"Manhattan"}
+lof = {1:"Relative-Euclidean", 2:"Euclidean", 3:"Mass-Distance", 4:"Manhattan"}
 print ("Creating a distance matrix using {} metric...".format(lof[args.function]))
 
 ### Loading the basic stuff...

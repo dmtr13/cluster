@@ -8,7 +8,7 @@ from joblib import Parallel, delayed
 
 """
 Takes a distance matrix, apply thresholding, and reshape into a 3-column format
-acceptable for MCL.
+acceptable for MCL. Multiprocessing enabled.
 """
 
 ### Defining arguments for input and thresholding cut-off

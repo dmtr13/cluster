@@ -7,6 +7,9 @@ import pandas as pd
 import scipy.spatial.distance as spd
 from joblib import Parallel, delayed
 
+"""
+Generates a random list of #n gene expression values across different tissues.
+"""
 
 start = time.time()
 

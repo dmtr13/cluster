@@ -7,6 +7,7 @@ import numpy as np
 """
 Calculate for the input the number of genes that have zero expressions and not.
 """
+
 filename_extention = os.path.basename(sys.argv[1])
 directory = os.path.dirname(sys.argv[1])
 fn, ext = os.path.splitext(filename_extention)

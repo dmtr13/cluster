@@ -1,45 +1,65 @@
 #!/usr/bin/env python3
 ### (C) 2018 - Dimitri Wirjowerdojo #######
 ### https://github.com/dmtr13/cluster/ ####
-import sys, os, time
+import sys, os, time, argparse, math
+import numpy as np
+import pandas as pd
+from joblib import Parallel, delayed
 
-print ("Preparing {} for MCL...".format(sys.argv[1]))
 """
-Takes a normalised matrix and converts into a 3-column format acceptable
-for MCL.
+Takes a distance matrix, apply thresholding, and reshape into a 3-column format
+acceptable for MCL.
 """
-start = time.time()
-matrix = open(sys.argv[1], 'r')
-header = list()
+parser = argparse.ArgumentParser()
+parser.add_argument('-i', '--input', required=True, help="Input file")
+parser.add_argument('-t', '--threshold', help="Cut off threshold. Default: prune 0.9 lowest. Input between 0-1.",
+                    type=float, default=0.9)
+args = parser.parse_args()
 
-filename, file_ext = os.path.splitext(sys.argv[1])
-outname = filename+"_MCLin"+file_ext
-outname = open(outname, 'w')
-
-m = 1
-for z, line in enumerate(matrix):
-    ## this or readline is apparently better
-    ## at parsing a file with loads of lines
-    if z == 0: ## Collect information on header aka genes on the columns
-        line = line.rstrip('\n').split('\t')
-        if line[0] == '' or line[0] == 'DM':
-            del line[0] ## Removing an empty tab char or 'DM'
-            header.extend(line) ##
-            n_gene = len(header)
+def thresholding(enum, vect):
+    """ Takes the values of the top Y percent, everything else will be 0.
+    """ ### Y <-- threshold value
+    if (enum+1) % 25 == 0:
+        print ("Checkpoint: {}/{}".format(enum+1, c))
+    from scipy.stats import rankdata as rd
+    vect = [max(vect) - el for el in vect]
+    ranking = [int(x-1) for x in rd(vect)]
+    ranked_vect = []
+    for x in ranking:
+        if x >= top:
+            ranked_vect.extend([vect[x]])
         else:
-            header.extend(line)
-            n_gene = len(header)
-    else:
-        if z % 250 == 0:
-            print ("{}/{} genes processed.".format(z, n_gene))
-        line = line.rstrip('\n').split('\t')
-        gene, vals = line[0], [float(x) for x in line[1:]]
-        assert len(header) == len(vals), "Length not equal"
-        for n in range(z-1, n_gene):
-        # for n in range(n_gene):
-            outname.write(gene+'\t'+header[n]+'\t'+str(vals[n])+'\n')
-matrix.close()
-outname.close()
+            ranked_vect.extend([0])
+    return [enum, genes[enum], ranked_vect]
+
+start = time.time()
+print ("Reading {}...".format(args.input))
+df = pd.read_csv(args.input, sep='\t', header=0, index_col=0)
+genes = list(df)
+ar = np.array(df)
+c = len(genes)
+
+filename_extention = os.path.basename(args.input)
+directory = os.path.dirname(args.input)
+fn, ext = os.path.splitext(filename_extention)
+top = math.ceil(c*args.threshold)
+
+
+print ("Creating similarity matrix and applying thresholding at {}%...".format(
+        100*args.threshold))
+results = Parallel(n_jobs=-1)(delayed(thresholding) \
+                    (enum, vect) for enum, vect in enumerate(ar)    )
+
+print ("Writing file...")
+outfile = open(directory+'/'+fn+'_'+str(100*args.threshold)+"_MCL"+ext, 'w')
+# outfile.write('\t'.join(genes[:c])+'\n')
+for r in results:
+    for h in range(r[0], c):
+        outfile.write(str(r[1])+'\t'+genes[h]+'\t'+str(r[2][h])+'\n')
+outfile.close()
 
 end = time.gmtime(time.time()-start)
-print ("Completed in {}.".format(time.strftime("%Hh %Mm %Ss", end)))
+print ("Created similarity matrix of {} with {}% thresholding in {}."
+        .format(args.input, 100*args.threshold,
+                time.strftime("%Hh %Mm %Ss", end))
+                )

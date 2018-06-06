@@ -10,8 +10,8 @@ import scipy.spatial.distance as spd
 
 """
 A modular script that reads in the processed dataset (via process_raw.py)
-and generates a normalised, thresholded similarity matrix for choosable metrics
-and also the three-column format accepted by MCL. Multiprocessing enabled.
+and generates a distance matrix for choosable metrics and also the three-column
+format accepted by MCL. Multiprocessing enabled.
 """
 
 ### List of Functions
@@ -23,18 +23,18 @@ lof = """\t[1] Relative Euclidean \n
 ### Input arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', required=True, help="Input file")
-parser.add_argument('-t', '--threshold', help="Cut off threshold. Default = 10\% highest.",
-                    type=float, default=0.9)
+# parser.add_argument('-t', '--threshold', help="Cut off threshold. Default = 10\% highest.",
+#                     type=float, default=0.9)
 parser.add_argument('-ref', '--reftype', help="Source of data. Default = HPA.",
                     type=str, default="HPA")
 parser.add_argument('-f', '--function', help="""Function to create the similarity matrix for MCL.
                     Options:{lof}""".format(lof=lof),
                     type=int, default=1)
-parser.add_argument('-o', '--output', help="""Output format [1] Matrix [2] MCL ABC [3] Both""", default=2)
+parser.add_argument('-o', '--output', help="""Output format [1] Matrix [2] MCL ABC [3] Both""", default=1)
 args = parser.parse_args()
 
 lof = {1:"Relative_Euclidean", 2:"Euclidean", 3:"Mass-Distance", 4:"Manhattan"}
-print ("Creating a similarity matrix using {} metric...".format(lof[args.function]))
+print ("Creating a distance matrix using {} metric...".format(lof[args.function]))
 
 ### Loading the basic stuff...
 start = time.time()
@@ -46,7 +46,7 @@ c = len(genes)
 filename_extention = os.path.basename(args.input)
 directory = os.path.dirname(args.input)
 fn, ext = os.path.splitext(filename_extention)
-top10 = math.ceil(c*args.threshold)
+# top10 = math.ceil(c*args.threshold)
 reftype = str(args.reftype)
 
 
@@ -120,8 +120,8 @@ def calc_matrix(enum, array):
     ### Scale each row to create similarity matrix by subtracting the max of
     ### each row with each element in the row. Therefore, the furthest will have
     ### a similarity of 0.
-    eu = [max(eu) - el for el in eu]
-    eu = prune_top10pc(eu)
+    # eu = [max(eu) - el for el in eu]
+    # eu = prune_top10pc(eu)
     # print (enum, eu)
     if (enum+1) % 50 == 0:
         print ("Checkpoint: {}/{}".format(enum+1, c))
@@ -131,37 +131,36 @@ results = Parallel(n_jobs=-1)(delayed(calc_matrix) \
                     (z, vect1) for z, vect1 in enumerate(ar) \
                     if z < c)
 
-fn_no = int(100*args.threshold)
+# fn_no = int(100*args.threshold)
 if args.output == 1:
-    eu_output_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
-                                            lof[args.function], fn_no)
+    eu_output_name = "../Data/{}_{}".format(fn, lof[args.function])
     eu_output = open(eu_output_name+'.tsv', 'w')
     eu_output.write('\t'.join(genes[:c])+'\n')
-elif args.output == 2:
-    eu_mcl_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
-                                            lof[args.function], fn_no)
-    eu_mcl = open(eu_mcl_name+'.tsv', 'w')
-elif args.output == 3:
-    eu_output_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
-                                            lof[args.function], fn_no)
-    eu_output = open(eu_output_name+'.tsv', 'w')
-    eu_output.write('\t'.join(genes[:c])+'\n')
-    eu_mcl_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
-                                            lof[args.function], fn_no)
-    eu_mcl = open(eu_mcl_name+'.tsv', 'w')
+# elif args.output == 2:
+#     eu_mcl_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
+#                                             lof[args.function], fn_no)
+#     eu_mcl = open(eu_mcl_name+'.tsv', 'w')
+# elif args.output == 3:
+#     eu_output_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
+#                                             lof[args.function], fn_no)
+#     eu_output = open(eu_output_name+'.tsv', 'w')
+#     eu_output.write('\t'.join(genes[:c])+'\n')
+#     eu_mcl_name = "../Data/{}_{}_{}_{}".format(fn, reftype,
+#                                             lof[args.function], fn_no)
+#     eu_mcl = open(eu_mcl_name+'.tsv', 'w')
 
 print ("Writing output...")
 for r in results:
     if args.output == 1:
         eu_output.write(str(r[1])+'\t'+'\t'.join([str(k) for k in r[2]])+'\n')
-    elif args.output == 2:
-        for h in range(int(r[0]), c):
-            eu_mcl.write(str(r[1])+'\t'+genes[h]+'\t'+str(r[2][h])+'\n')
-    elif args.output == 3:
-        eu_output.write(str(r[1])+'\t'+'\t'.join([str(k) for k in r[2]])+'\n')
-        for h in range(int(r[0]), c):
-            eu_mcl.write(str(r[1])+'\t'+genes[h]+'\t'+str(r[2][h])+'\n')
+    # elif args.output == 2:
+    #     for h in range(int(r[0]), c):
+    #         eu_mcl.write(str(r[1])+'\t'+genes[h]+'\t'+str(r[2][h])+'\n')
+    # elif args.output == 3:
+    #     eu_output.write(str(r[1])+'\t'+'\t'.join([str(k) for k in r[2]])+'\n')
+    #     for h in range(int(r[0]), c):
+    #         eu_mcl.write(str(r[1])+'\t'+genes[h]+'\t'+str(r[2][h])+'\n')
 
 end = time.gmtime(time.time()-start)
-print ("Similarity matrix of {} for {} metric completed in {}."
+print ("Distance matrix of {} for {} metric completed in {}."
         .format(args.input, lof[args.function], time.strftime("%Hh %Mm %Ss", end)))

@@ -10,6 +10,8 @@ from joblib import Parallel, delayed
 Takes a distance matrix, apply thresholding, and reshape into a 3-column format
 acceptable for MCL.
 """
+
+### Defining arguments for input and thresholding cut-off
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', required=True, help="Input file")
 parser.add_argument('-t', '--threshold', help="Cut off threshold. Default: prune 0.9 lowest. Input between 0-1.",
@@ -39,9 +41,9 @@ genes = list(df)
 ar = np.array(df)
 c = len(genes)
 
-filename_extention = os.path.basename(args.input)
+filename_extension = os.path.basename(args.input)
 directory = os.path.dirname(args.input)
-fn, ext = os.path.splitext(filename_extention)
+fn, ext = os.path.splitext(filename_extension)
 top = math.ceil(c*args.threshold)
 
 

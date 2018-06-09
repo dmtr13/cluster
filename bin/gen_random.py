@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 ### (C) 2018 - Dimitri Wirjowerdojo #######
 ### https://github.com/dmtr13/cluster/ ####
-import math, sys, time, random, tempfile, shutil
+import math, sys, time, random, tempfile, shutil, os
 import numpy as np
 import pandas as pd
 import scipy.spatial.distance as spd

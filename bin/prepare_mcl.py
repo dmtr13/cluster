@@ -24,8 +24,11 @@ def thresholding(enum, vect):
     if (enum+1) % 25 == 0:
         print ("Checkpoint: {}/{}".format(enum+1, c))
     from scipy.stats import rankdata as rd
-    vect = [max(vect) - el for el in vect]
+    ### Change to numpy-based calculations...
+    vect = np.subtract(vect, max(vect))
+    # vect = [max(vect) - el for el in vect]
     ranking = [int(x-1) for x in rd(vect)]
+    ##########################################
     ranked_vect = []
     for x in ranking:
         if x >= top:
@@ -36,7 +39,7 @@ def thresholding(enum, vect):
 
 start = time.time()
 print ("Reading {}...".format(args.input))
-df = pd.read_csv(args.input, sep='\t', header=0, index_col=0)
+df = pd.read_csv(args.input, sep='\t', header=0, index_col=0, memory_map=True)
 genes = list(df)
 ar = np.array(df)
 c = len(genes)

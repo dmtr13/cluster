@@ -25,7 +25,7 @@ def thresholding(enum, vect):
         print ("Checkpoint: {}/{}".format(enum+1, c))
     from scipy.stats import rankdata as rd
     ### Change to numpy-based calculations...
-    vect = np.subtract(vect, max(vect))
+    vect = np.subtract(max(vect), vect)
     # vect = [max(vect) - el for el in vect]
     ranking = [int(x-1) for x in rd(vect)]
     ##########################################

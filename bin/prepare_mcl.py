@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 ### (C) 2018 - Dimitri Wirjowerdojo #######
 ### https://github.com/dmtr13/cluster/ ####
-import sys, os, time, argparse, math
+import sys, os, time, argparse, math, csv
 import numpy as np
 import pandas as pd
 from joblib import Parallel, delayed
@@ -13,29 +13,39 @@ acceptable for MCL. Multiprocessing enabled.
 
 ### Defining arguments for input and thresholding cut-off
 parser = argparse.ArgumentParser()
-parser.add_argument('-i', '--input', required=True, help="Input file")
-parser.add_argument('-t', '--threshold', help="Cut off threshold. Default: prune 0.9 lowest. Input between 0-1.",
-                    type=float, default=0.9)
+parser.add_argument('-i', '--input',
+                    required=True,
+                    help="Input file is output of create_matrix.py")
+parser.add_argument('-t', '--threshold',
+                    help="""Cut off threshold. Default: prune 0.9 lowest.
+                            Input as float between 0-1.""",
+                    nargs="*", type=float, default=[0.9])
 args = parser.parse_args()
 
 def thresholding(enum, vect):
     """ Takes the values of the top Y percent, everything else will be 0.
     """ ### Y <-- threshold value
     if (enum+1) % 25 == 0:
-        print ("Checkpoint: {}/{}".format(enum+1, c))
+        print ("Thresholding: {}/{}".format(enum+1, c))
     from scipy.stats import rankdata as rd
-    ### Change to numpy-based calculations...
     vect = np.subtract(max(vect), vect)
-    # vect = [max(vect) - el for el in vect]
-    ranking = [int(x-1) for x in rd(vect)]
-    ##########################################
+    ranking = np.subtract(rd(vect), np.ones(len(vect))).astype(int)
     ranked_vect = []
     for x in ranking:
         if x >= top:
-            ranked_vect.extend([vect[x]])
+            ranked_vect.extend([vect.item(x)])
         else:
             ranked_vect.extend([0])
     return [enum, genes[enum], ranked_vect]
+
+def prep_write(vect):
+    enum = vect[0]
+    if (enum+1) % 500 == 0:
+        print ("Writing: {}/{}".format(enum+1, c))
+    towrite = []
+    for j in range(vect[0], len(vect[2])):
+        towrite.append([vect[1], genes[j], str(vect[2][j])])
+    return towrite
 
 start = time.time()
 print ("Reading {}...".format(args.input))
@@ -47,24 +57,34 @@ c = len(genes)
 filename_extension = os.path.basename(args.input)
 directory = os.path.dirname(args.input)
 fn, ext = os.path.splitext(filename_extension)
-top = math.ceil(c*args.threshold)
 
 
-print ("Creating similarity matrix and applying thresholding at {}%...".format(
-        100*args.threshold))
-results = Parallel(n_jobs=-1)(delayed(thresholding) \
-                    (enum, vect) for enum, vect in enumerate(ar)    )
+for t in args.threshold:
+    top = math.ceil(c*t)
 
-print ("Writing file...")
-outfile = open(directory+'/'+fn+'_'+str(100*args.threshold)+"_MCL"+ext, 'w')
-# outfile.write('\t'.join(genes[:c])+'\n')
-for r in results:
-    for h in range(r[0], c):
-        outfile.write(str(r[1])+'\t'+genes[h]+'\t'+str(r[2][h])+'\n')
-outfile.close()
+    print ("Creating similarity matrix and applying thresholding at {}%...".format(
+            100*t))
+    results = Parallel(n_jobs=-1)(delayed(thresholding) \
+                        (enum, vect) for enum, vect in enumerate(ar)    )
+
+    print ("Writing file...")
+    outfile = directory+'/'+fn+'_'+str(100*t)+"_MCL"+ext
+    re_write = Parallel(n_jobs=-1)(delayed(prep_write) \
+                (vect) for vect in results)
+    re_write = [j for i in re_write for j in i]
+
+
+    with open(outfile, 'w') as csvfile:
+        writer = csv.writer(csvfile, delimiter='\t', lineterminator='\n',
+                            quoting=csv.QUOTE_NONE, escapechar="\\")
+        for line in re_write:
+            writer.writerow(line)
+
+    print ("Finished {}% thresholding.\n".format(100*t))
+
 
 end = time.gmtime(time.time()-start)
-print ("Created similarity matrix of {} with {}% thresholding in {}."
-        .format(args.input, 100*args.threshold,
+print ("Created similarity matrix of {} in {}.\n"
+        .format(args.input,
                 time.strftime("%Hh %Mm %Ss", end))
                 )

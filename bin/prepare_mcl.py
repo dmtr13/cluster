@@ -25,7 +25,7 @@ args = parser.parse_args()
 def thresholding(enum, vect):
     """ Takes the values of the top Y percent, everything else will be 0.
     """ ### Y <-- threshold value
-    if (enum+1) % 25 == 0:
+    if (enum+1) % 100 == 0:
         print ("Thresholding: {}/{}".format(enum+1, c))
     from scipy.stats import rankdata as rd
     vect = np.subtract(max(vect), vect)
@@ -36,16 +36,10 @@ def thresholding(enum, vect):
             ranked_vect.extend([vect.item(x)])
         else:
             ranked_vect.extend([0])
-    return [enum, genes[enum], ranked_vect]
-
-def prep_write(vect):
-    enum = vect[0]
-    if (enum+1) % 500 == 0:
-        print ("Writing: {}/{}".format(enum+1, c))
-    towrite = []
-    for j in range(vect[0], len(vect[2])):
-        towrite.append([vect[1], genes[j], str(vect[2][j])])
-    return towrite
+    writelist = []
+    for g in range(enum, len(ranked_vect)):
+        writelist.append([genes[enum], genes[g], str(ranked_vect[g])])
+    return writelist
 
 start = time.time()
 print ("Reading {}...".format(args.input))
@@ -53,6 +47,7 @@ df = pd.read_csv(args.input, sep='\t', header=0, index_col=0, memory_map=True)
 genes = list(df)
 ar = np.array(df)
 c = len(genes)
+csum = sum(range(1, c+1))
 
 filename_extension = os.path.basename(args.input)
 directory = os.path.dirname(args.input)
@@ -62,24 +57,22 @@ fn, ext = os.path.splitext(filename_extension)
 for t in args.threshold:
     top = math.ceil(c*t)
 
-    print ("Creating similarity matrix and applying thresholding at {}%...".format(
-            100*t))
+    print ("Creating similarity matrix and applying thresholding at {}%..."
+            .format(100*t))
     results = Parallel(n_jobs=-1)(delayed(thresholding) \
                         (enum, vect) for enum, vect in enumerate(ar)    )
+    results = [j for i in results for j in i]
 
     print ("Writing file...")
     outfile = directory+'/'+fn+'_'+str(100*t)+"_MCL"+ext
-    re_write = Parallel(n_jobs=-1)(delayed(prep_write) \
-                (vect) for vect in results)
-    re_write = [j for i in re_write for j in i]
-
-
     with open(outfile, 'w') as csvfile:
         writer = csv.writer(csvfile, delimiter='\t', lineterminator='\n',
                             quoting=csv.QUOTE_NONE, escapechar="\\")
-        for line in re_write:
+        for z, line in enumerate(results):
+            if (z+1) % 100000 == 0:
+                print ("Writing: {}k/{}k".format((z+1)//1000, csum//1000))
             writer.writerow(line)
-
+    results = None
     print ("Finished {}% thresholding.\n".format(100*t))
 
 

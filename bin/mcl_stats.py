@@ -37,7 +37,8 @@ def cluster(glob_pattern):
     return aggregate
 
 def clus_no(aggr):
-    return [item[0] for item in aggr]
+    thelist = [item[0] for item in aggr]
+    return thelist[1:6]
 
 def clus_size(aggr):
     flatlist = []
@@ -57,6 +58,9 @@ man = cluster(metrics[3])
 
 ### No. of Clusters vs. Threshold ####################################
 print ("Plotting distribution of no. of clusters against cut-off...")
+##
+threshold = threshold[1:6]
+##
 N = len(threshold)
 ind = np.arange(N)
 fig, ax = plt.subplots()

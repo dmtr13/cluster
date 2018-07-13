@@ -38,16 +38,17 @@ def cluster(glob_pattern):
 
 def clus_no(aggr):
     thelist = [item[0] for item in aggr]
-    return thelist[1:6]
+    # return thelist[1:4]
+    return thelist
 
 def clus_size(aggr):
-    flatlist = []
+    flatlist = dict()
     for thresh in aggr:
         th = thresh[3]
         counter = [(k,v) for k,v in thresh[2].items()]
         for counts in counter:
-            clsize, freq = str(counts[0]), str(counts[1])
-            flatlist.append([str(threshold[th]), clsize, freq])
+            clsize, freq = int(counts[0]), int(counts[1])
+            flatlist.append([float(threshold[th]), clsize, freq])
     return flatlist
 
 print ("Processing statistics...")
@@ -59,7 +60,7 @@ man = cluster(metrics[3])
 ### No. of Clusters vs. Threshold ####################################
 print ("Plotting distribution of no. of clusters against cut-off...")
 ##
-threshold = threshold[1:6]
+# threshold = threshold[1:4] ##Also check f(clus_no)!
 ##
 N = len(threshold)
 ind = np.arange(N)
@@ -87,14 +88,14 @@ metr = {"Relative-Euclidean":clus_size(rel_euc),
             "Mass-Distance":clus_size(md),
             "Manhattan":clus_size(man)}
 
-print ("Processing distribution of no. of genes per cluster...")
-for fi in metrics:
-    print ("Metric:\t{}".format(fi))
-    with open("../Data/{}.stats".format(fi), 'w') as st:
-        st.write("Metric:\t{}\n".format(fi))
-        st.write("Threshold | Cluster Size (genes)| Count\n")
-        data = metr[fi]
-        for line in data:
-            st.write(' | '.join(line)+"\n")
+# print ("Processing distribution of no. of genes per cluster...")
+# for fi in metrics:
+#     print ("Metric:\t{}".format(fi))
+#     with open("../Data/{}.stats".format(fi), 'w') as st:
+#         st.write("Metric:\t{}\n".format(fi))
+#         st.write("Threshold | Cluster Size (genes)| Count\n")
+#         data = metr[fi]
+#         for line in data:
+#             st.write(' | '.join(line)+"\n")
 
 print ("Done!\n")

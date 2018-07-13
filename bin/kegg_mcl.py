@@ -36,17 +36,25 @@ for z, line in enumerate(inp):
     if len(line) > 10:
         colcounts.append("Cluster#{a}-({b})".format(a=z+1, b=len(line)))
         mclgenes[z] = set(line)
-array = np.zeros((len(keys), len(colcounts)))#, \
+array = np.zeros((len(keys), len(colcounts)), dtype=float)#, \
         #dtype=[('number', 'i4'), ('percentage', 'f6')])
 
 kegg_counter = range(len(keys))
 mcl_counter = range(len(colcounts))
 
+def jaccard_sim(set1, set2):
+    if len(set1) + len(set2) == 0:
+        return 1.0
+    else:
+        index = len(cluster[keys[k]][1] & mclgenes[m]) /\
+                len(cluster[keys[k]][1] | mclgenes[m])
+        return index
+
 for k in kegg_counter:
     for m in mcl_counter:
-        intersection = cluster[keys[k]][1] & mclgenes[m]
-        # pc = 100*(len(intersection)/cluster[keys[k]][0])
-        array[k, m] = len(intersection)
+        # intersection = cluster[keys[k]][1] & mclgenes[m]
+        # array[k, m] = intersection
+        array[k, m] = jaccard_sim(cluster[keys[k]][1], mclgenes[m])
 
 
 df = pd.DataFrame(array, index=keys, columns=colcounts)

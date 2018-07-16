@@ -65,7 +65,7 @@ def plot(aggregate, metrics):
 
     title = 'Cluster_Size_Distribution_{}'.format(metrics)
     ax.set_title('Distribution of Cluster Size for {} Metric'.format(metrics))
-    ax.legend((threshold[1:6]))
+    ax.legend((threshold))
     ax.set_xticks(ind+width/N)
     ax.set_xticklabels(bin, rotation=25)
     ax.set_ylabel('Count')

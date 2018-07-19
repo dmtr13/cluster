@@ -23,15 +23,12 @@ lof = """\t[1] Relative-Euclidean \n
 ### Input arguments
 parser = argparse.ArgumentParser()
 parser.add_argument('-i', '--input', required=True, help="Input file")
-# parser.add_argument('-t', '--threshold', help="Cut off threshold. Default = 10\% highest.",
-#                     type=float, default=0.9)
 parser.add_argument('-ref', '--reftype', help="Source of data. Default = HPA.",
                     type=str, default="HPA")
 parser.add_argument('-f', '--function', help="""Function to create the similarity matrix for MCL.
                     Options:{lof}""".format(lof=lof),
                     type=int, default=1)
 parser.add_argument('-o', '--output', help="""Output format [1] Matrix [2] MCL ABC [3] Both""", default=1)
-# parser.add_argument('-n', '--null', help="Removes genes with null expression across all the tissues.")
 args = parser.parse_args()
 
 lof = {1:"Relative-Euclidean", 2:"Euclidean", 3:"Mass-Distance", 4:"Manhattan"}

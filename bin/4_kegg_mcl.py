@@ -36,8 +36,7 @@ for z, line in enumerate(inp):
     if len(line) > 10:
         colcounts.append("Cluster#{a}-({b})".format(a=z+1, b=len(line)))
         mclgenes[z] = set(line)
-array = np.zeros((len(keys), len(colcounts)), dtype=float)#, \
-        #dtype=[('number', 'i4'), ('percentage', 'f6')])
+array = np.zeros((len(keys), len(colcounts)), dtype=float)
 
 kegg_counter = range(len(keys))
 mcl_counter = range(len(colcounts))

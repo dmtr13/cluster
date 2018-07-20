@@ -28,20 +28,23 @@ parser.add_argument('-ref', '--reftype', help="Source of data. Default = HPA.",
 parser.add_argument('-f', '--function', help="""Function to create the similarity matrix for MCL.
                     Options:{lof}""".format(lof=lof),
                     type=int, default=1)
-parser.add_argument('-o', '--output', help="""Output format [1] Matrix [2] MCL ABC [3] Both""", default=1)
+parser.add_argument('-n', '--null', help="Removes genes with null expression", type=bool, default=0)
 args = parser.parse_args()
 
 lof = {1:"Relative-Euclidean", 2:"Euclidean", 3:"Mass-Distance", 4:"Manhattan"}
-print ("Creating a distance matrix using {} metric...".format(lof[args.function]))
+if args.null == 1:
+    print ("Creating a distance matrix using {} metric (no Null)...".format(lof[args.function]))
+else:
+    print ("Creating a distance matrix using {} metric...".format(lof[args.function]))
 
 ### Loading the basic stuff...
 start = time.time()
 df = pd.read_csv(args.input, sep='\t', header=0, index_col=0)
+if args.null == 1:
+    df = df.T.drop([col for col, val in df.T.sum().iteritems() if val==0], axis=1).T
 header = list(df)
 genes = df.index.tolist()
 ar = np.array(df)
-if args.null == True:
-    df.T.drop([col for col, val in df.T.sum().iteritems() if val==0], axis=1).T
 c = len(genes)
 filename_extention = os.path.basename(args.input)
 directory = os.path.dirname(args.input)
@@ -115,13 +118,6 @@ def calc_matrix(enum, array):
         else:
             print ("Unspecified function.")
             sys.exit()
-    # print (enum, eu)
-    ### Scale each row to create similarity matrix by subtracting the max of
-    ### each row with each element in the row. Therefore, the furthest will have
-    ### a similarity of 0.
-    # eu = [max(eu) - el for el in eu]
-    # eu = prune_top10pc(eu)
-    # print (enum, eu)
     if (enum+1) % 50 == 0:
         print ("Checkpoint: {}/{}".format(enum+1, c))
     return [enum, genes[enum], eu]
@@ -143,5 +139,9 @@ for r in results:
 
 
 end = time.gmtime(time.time()-start)
-print ("Distance matrix of {} for {} metric completed in {}."
+if args.null == 1:
+    print ("Distance matrix (no Null) of {} for {} metric completed in {}."
+            .format(args.input, lof[args.function], time.strftime("%Hh %Mm %Ss", end)))
+else:
+    print ("Distance matrix of {} for {} metric completed in {}."
         .format(args.input, lof[args.function], time.strftime("%Hh %Mm %Ss", end)))

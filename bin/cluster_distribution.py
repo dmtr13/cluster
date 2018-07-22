@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 ### (C) 2018 - Dimitri Wirjowerdojo #######
 ### https://github.com/dmtr13/cluster/ ####
-import glob
+import glob, argparse
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-n', '--null', help="Removes genes with null expression", type=bool, default=0)
+args = parser.parse_args()
 
 bin = ['1-10', '11-50', '51-100', '101-250', '250-500', '501-1000',
         '1001-2500', '>2500']
@@ -30,7 +34,7 @@ def binning(sizes):
     return thesize
 
 metrics = ["Relative-Euclidean", "Euclidean",
-            "Mass-Distance", "Manhattan"]
+           "Mass-Distance", "Manhattan"]
 threshold = [0.9, 0.925, 0.95, 0.96, 0.97, 0.98, 0.99, 0.995, 0.999]
 def clust_th(metrics):
     print ("Processing metric: {}".format(metrics))
@@ -63,18 +67,26 @@ def plot(aggregate, metrics):
     p7 = ax.bar(ind+3*width, aggregate[7][1], width, color='steelblue')
     p8 = ax.bar(ind+4*width, aggregate[8][1], width, color='brown')
 
-    title = 'Cluster_Size_Distribution_{}'.format(metrics)
-    ax.set_title('Distribution of Cluster Size for {} Metric'.format(metrics))
+    if args.null == 1:
+        ax.set_title('Distribution of Cluster Size for {} Metric (noNull)'.format(metrics))
+    else:
+        ax.set_title('Distribution of Cluster Size for {} Metric'.format(metrics))
     ax.legend((threshold))
     ax.set_xticks(ind+width/N)
     ax.set_xticklabels(bin, rotation=25)
     ax.set_ylabel('Count')
     ax.set_xlabel('Cluster Size')
     ax.autoscale_view()
-    plt.savefig("../Data/{}.pdf".format(metrics))
+    if args.null == 1:
+        plt.savefig("../Data/{}_noNull.pdf".format(metrics))
+    else:
+        plt.savefig("../Data/{}.pdf".format(metrics))
     return True
 
-filepath = "../Data/MCL_Cluster_Distribution.xlsx"
+if args.null == 1:
+    filepath = "../Data/MCL_Cluster_Distribution_noNull.xlsx"
+else:
+    filepath = "../Data/MCL_Cluster_Distribution.xlsx"
 writer = pd.ExcelWriter(filepath, engine='xlsxwriter')
 
 from collections import defaultdict

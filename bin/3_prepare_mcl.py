@@ -20,6 +20,9 @@ parser.add_argument('-t', '--threshold',
                     help="""Cut off threshold. Default: prune 0.9 lowest.
                             Input as float between 0-1.""",
                     nargs="*", type=float, default=[0.9])
+parser.add_argument(-'pc', '--parcorel',
+                    help="Toggle processing for partial correlation matrix",
+                    type=bool, default=False)
 args = parser.parse_args()
 
 def thresholding(enum, vect):
@@ -28,7 +31,16 @@ def thresholding(enum, vect):
     if (enum+1) % 100 == 0:
         print ("Thresholding: {}/{}".format(enum+1, c))
     from scipy.stats import rankdata as rd
-    vect = np.subtract(max(vect), vect)
+    if args.parcorel == False:
+        ## For regular distance metrics, as MCL takes in similarity values,
+        ## the values are normalised into the largest of one set of genes
+        ## subtracted by element n.
+        vect = np.subtract(max(vect), vect)
+    else:
+        ## > Correlation > Inverse gives negative values, which is not
+        ## acceptable for MCL. Therefore, the values are normalised to
+        ## 0 - inf.
+        vect = np.subtract(vect, min(vect))
     ranking = np.subtract(rd(vect), np.ones(len(vect))).astype(int)
     ranked_vect = []
     for x in ranking:
@@ -46,6 +58,14 @@ print ("Reading {}...".format(args.input))
 df = pd.read_csv(args.input, sep='\t', header=0, index_col=0, memory_map=True)
 genes = list(df)
 ar = np.array(df)
+
+### insert partial correlation processing here ###
+if args.parcorel == True:
+    print ("Calculating covariance...")
+    ar = np.cov(ar)
+    print ("Calculating inverse...")
+    ar = np.linalg.inv(ar)
+###
 c = len(genes)
 csum = sum(range(1, c+1))
 

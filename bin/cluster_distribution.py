@@ -38,7 +38,7 @@ metrics = ["Relative-Euclidean", "Euclidean",
 threshold = [0.9, 0.925, 0.95, 0.96, 0.97, 0.98, 0.99, 0.995, 0.999]
 def clust_th(metrics):
     print ("Processing metric: {}".format(metrics))
-    files = glob.glob("../Data/out*_{}*I20".format(metrics))
+    files = glob.glob("../Data/yesNull/out*_{}*I20".format(metrics))
     files.sort()
     aggregate = [] #[threshold, [binnings]]
     for th, f in enumerate(files):

@@ -20,7 +20,7 @@ parser.add_argument('-t', '--threshold',
                     help="""Cut off threshold. Default: prune 0.9 lowest.
                             Input as float between 0-1.""",
                     nargs="*", type=float, default=[0.9])
-parser.add_argument(-'pc', '--parcorel',
+parser.add_argument('-pc', '--parcorel',
                     help="Toggle processing for partial correlation matrix",
                     type=bool, default=False)
 args = parser.parse_args()

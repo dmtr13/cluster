@@ -62,7 +62,13 @@ ar = np.array(df)
 ### insert partial correlation processing here ###
 if args.parcorel == True:
     print ("Calculating inverse...")
-    ar = np.linalg.inv(ar)
+    try:
+        ar = np.linalg.inv(ar)
+    except:
+        print ("Singular matrix")
+    else:
+        print ("Calculating the Moore-Penrose/pseudo-inverse matrix...")
+        ar = np.linalg.pinv(ar)
 ###
 c = len(genes)
 csum = sum(range(1, c+1))

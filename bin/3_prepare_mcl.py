@@ -61,8 +61,6 @@ ar = np.array(df)
 
 ### insert partial correlation processing here ###
 if args.parcorel == True:
-    print ("Calculating covariance...")
-    ar = np.cov(ar)
     print ("Calculating inverse...")
     ar = np.linalg.inv(ar)
 ###

@@ -34,7 +34,8 @@ def binning(sizes):
     return thesize
 
 metrics = ["Relative-Euclidean", "Euclidean",
-           "Mass-Distance", "Manhattan"]
+           "Mass-Distance", "Manhattan",
+           "Pe-parCorel"]
 threshold = [0.9, 0.925, 0.95, 0.96, 0.97, 0.98, 0.99, 0.995, 0.999]
 def clust_th(metrics):
     print ("Processing metric: {}".format(metrics))

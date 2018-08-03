@@ -1,0 +1,21 @@
+mcl 2kR_Euclidean_Normalised_MCLin.tsv --abc -o 2kR_Euclidean_Normalised_MCLin_I6.mclout -I 6 -v all --show-log=y -te 8 || 2kR_Euclidean_Normalised_MCLin_I6.log
+.................................................. 1M
+.................................................. 2M
+
+[mcl] new tab created
+[mcl] pid 25203
+ ite   chaos  time hom(avg,lo,hi) m-ie m-ex i-ex fmv   E/V  dd    cls   olap avg
+  1     0.00 49.57 0.70/0.70/0.87 1.00 0.70 0.70  99  1400  2       1      0 0.0
+  2     0.00  7.29 1.00/1.00/1.00 1.00 1.00 0.70  99  1400  1       1      0 0.0
+  3     0.02  4.62 1.00/1.00/1.00 1.00 1.00 0.70  99  1398  1       1      0 0.0
+  4     0.10  4.65 0.99/0.99/0.99 1.00 1.00 0.70  99  1396  1       1      0 0.0
+  5     0.59  4.59 0.85/0.85/0.85 1.00 1.00 0.70  99  1396  1       1      0 0.0
+  6     4.87  4.82 0.35/0.35/0.35 1.00 0.73 0.51  99  1025  1       1      0 0.0
+  7    20.18  2.44 0.20/0.20/0.20 1.00 0.13 0.07 100   136  1       1      0 0.0
+  8     0.08  0.07 0.95/0.95/0.95 1.00 0.02 0.00  99     3  1       1      0 0.0
+  9     0.00  0.00 1.00/1.00/1.00 1.00 0.33 0.00   0     1  1       1      0 0.0
+[mcl] jury pruning marks: <70,99,99>, out of 100
+[mcl] jury pruning synopsis: <80.9 or favourable> (cf -scheme, -do log)
+[mcl] output is in 2kR_Euclidean_Normalised_MCLin_I6.mclout
+[mcl] 1 clusters found
+[mcl] output is in 2kR_Euclidean_Normalised_MCLin_I6.mclout

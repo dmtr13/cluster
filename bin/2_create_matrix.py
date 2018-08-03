@@ -19,8 +19,7 @@ lof = """\t[1] Relative-Euclidean \n
 \t[2] Euclidean \n
 \t[3] Mass-Distance \n
 \t[4] Manhattan
-\t[5] Spearman-Partial Correlation
-\t[6] Pearson-Partial Correlation"""
+\t[5] Pearson-Partial Correlation"""
 
 ### Input arguments
 parser = argparse.ArgumentParser()
@@ -34,10 +33,10 @@ parser.add_argument('-n', '--null', help="Removes genes with null expression", t
 args = parser.parse_args()
 
 lof = {1:"Relative-Euclidean", 2:"Euclidean", 3:"Mass-Distance",
-       4:"Manhattan", 5:"Sp-parCorel", 6:"Pe-parCorel"}
+       4:"Manhattan", 5:"Pe-parCorel"}
 
 ### Forces null expression removal if not toggled for parCorel #################
-if args.function == 5 or args.function == 6:
+if args.function == 5:
     args.null == True
 ################################################################################
 
@@ -45,7 +44,7 @@ if args.function == 5 or args.function == 6:
 start = time.time()
 print ("Reading {}...".format(args.input))
 df = pd.read_csv(args.input, sep='\t', header=0, index_col=0)
-if args.null == 1 or args.function == 5 or args.function == 6:
+if args.null == 1 or args.function == 5:
     df = df.T.drop([col for col, val in df.T.sum().iteritems() if val==0], axis=1).T
 header = list(df)
 genes = df.index.tolist()
@@ -56,7 +55,7 @@ directory = os.path.dirname(args.input)
 fn, ext = os.path.splitext(filename_extention)
 reftype = str(args.reftype)
 
-if args.null == 1 or args.function == 5 or args.function == 6:
+if args.null == 1 or args.function == 5:
     print ("Creating a distance matrix using {} metric (no Null)...".format(lof[args.function]))
 else:
     print ("Creating a distance matrix using {} metric...".format(lof[args.function]))
@@ -110,9 +109,9 @@ def calc_matrix(enum, array):
             eu.append(mass_distance(array, vect2))
         elif args.function == 4:
             eu.append(spd.cityblock(array, vect2))
+        # elif args.function == 5:
+        #     eu.append(sp_parcorel(array, vect2))
         elif args.function == 5:
-            eu.append(sp_parcorel(array, vect2))
-        elif args.function == 6:
             eu.append(pearsonr(array, vect2)[0])
         else:
             print ("Unspecified function.")
@@ -125,7 +124,7 @@ results = Parallel(n_jobs=-1)(delayed(calc_matrix) \
                     (z, vect1) for z, vect1 in enumerate(ar) \
                     if z < c)
 
-if args.null == True or args.function == 5 or args.function == 6:
+if args.null == True or args.function == 5:
     eu_output_name = "../Data/{}_{}_noNull".format(fn, lof[args.function])
 else:
     eu_output_name = "../Data/{}_{}".format(fn, lof[args.function])
@@ -138,7 +137,7 @@ for r in results:
 
 
 end = time.gmtime(time.time()-start)
-if args.null == 1 or args.function == 5 or args.function == 6:
+if args.null == 1 or args.function == 5:
     print ("Distance matrix (no Null) of {} for {} metric completed in {}."
             .format(args.input, lof[args.function], time.strftime("%Hh %Mm %Ss", end)))
 else:

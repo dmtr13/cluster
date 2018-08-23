@@ -10,6 +10,8 @@ Reads in KEGG dB with gene symbols instead of ENSGs and compare each pathway
 to the clusters as determined by MCL.
 """
 
+## Aggregating the size of each pathway from KEGG (with Gene symbols pre-
+## processed using process_kegg.py script)
 cluster = dict()
 keys = []
 with open("../Reference/KEGG_GS.tsv", 'r') as kgs:
@@ -19,6 +21,7 @@ with open("../Reference/KEGG_GS.tsv", 'r') as kgs:
         keys.append(key)
         cluster[key] = [len(line[1:]), set(line[1:])]
 # print (cluster)
+
 ### OUTFILE ####################################################################
 filename_extension = os.path.basename(sys.argv[1])
 directory = os.path.dirname(sys.argv[1])
@@ -42,6 +45,8 @@ kegg_counter = range(len(keys))
 mcl_counter = range(len(colcounts))
 
 def jaccard_sim(set1, set2):
+    """https://en.wikipedia.org/wiki/Jaccard_index
+    """
     if len(set1) + len(set2) == 0:
         return 1.0
     else:

@@ -14,6 +14,7 @@ all tissues.
   3. [Mass-Distance](https://dx.doi.org/10.1093/bioinformatics/btl127)
   4. Manhattan
   5. Pearson-Partial Correlation
+
 3. The output from §2 can then be fed into [3_prepare_mcl](3_prepare_mcl.py),
 for the non-correlation based metrics, the matrix is convereted into similarity-
 based, then ranked by thresholding between 0-1 (default is 90% pruning: only
@@ -26,4 +27,4 @@ The output is in '--abc' format acceptable by MCL.
 [4A_process_kegg](4A_process_kegg.py) then feed the MCL output from §4 into
 [4_kegg_mcl](4_kegg_mcl.py) which will create a Jaccard index-based matrix
 pairing each cluster (as defined by MCL) and each (manually-curated) KEGG
-pathway. The results of this can be seen [elsewhere](../Results/MCL Output.ipynb).
+pathway. The results of this can be seen [elsewhere](../Results/MCL\ Output.ipynb).

@@ -1,0 +1,1791 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{MCL Output}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{c-2018---dimitri-wirjowerdojo}{%
+\paragraph{(C) 2018 - Dimitri
+Wirjowerdojo}\label{c-2018---dimitri-wirjowerdojo}}
+
+https://github.com/dmtr13/cluster/
+
+Processes MCL clustering results and create a heat-map of the Jaccard
+indices.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{o}{\PYZpc{}}\PY{o}{\PYZpc{}}\PY{n+nx}{javascript}
+         \PY{n+nx}{IPython}\PY{p}{.}\PY{n+nx}{OutputArea}\PY{p}{.}\PY{n+nx}{prototype}\PY{p}{.}\PY{n+nx}{\PYZus{}should\PYZus{}scroll} \PY{o}{=} \PY{k+kd}{function}\PY{p}{(}\PY{n+nx}{lines}\PY{p}{)} \PY{p}{\PYZob{}}
+             \PY{k}{return} \PY{k+kc}{false}\PY{p}{;}
+         \PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    
+    \begin{verbatim}
+<IPython.core.display.Javascript object>
+    \end{verbatim}
+
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+         \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k}{as} \PY{n+nn}{pd}
+         \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k}{as} \PY{n+nn}{sns}
+         \PY{k+kn}{import} \PY{n+nn}{glob}\PY{o}{,} \PY{n+nn}{os}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{k}{def} \PY{n+nf}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{infile}\PY{p}{)}\PY{p}{:}
+             \PY{n}{filename\PYZus{}extension} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{basename}\PY{p}{(}\PY{n}{infile}\PY{p}{)}
+             \PY{n}{fn}\PY{p}{,} \PY{n}{ext} \PY{o}{=} \PY{n}{os}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{splitext}\PY{p}{(}\PY{n}{filename\PYZus{}extension}\PY{p}{)}
+             \PY{n}{fn} \PY{o}{=} \PY{n}{fn}\PY{o}{.}\PY{n}{replace}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.tsv}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Heatmap for }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{...}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{fn}\PY{p}{)}\PY{p}{)}
+             \PY{n}{df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{n}{infile}\PY{p}{,} \PY{n}{sep}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+se}{\PYZbs{}t}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{index\PYZus{}col}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{header}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Number of clusters found: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{df}\PY{o}{.}\PY{n}{columns}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+             \PY{n}{coord} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{stack}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{idxmax}\PY{p}{(}\PY{p}{)}
+             \PY{n}{jacc\PYZus{}in} \PY{o}{=} \PY{n}{df}\PY{o}{.}\PY{n}{loc}\PY{p}{[}\PY{n}{coord}\PY{p}{]}
+             \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Highest Jaccard index: }\PY{l+s+si}{\PYZob{}\PYZcb{}}\PY{l+s+s2}{\PYZdq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{jacc\PYZus{}in}\PY{p}{)}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{20}\PY{p}{,}\PY{l+m+mi}{15}\PY{p}{)}\PY{p}{)}
+             \PY{n}{sns}\PY{o}{.}\PY{n}{heatmap}\PY{p}{(}\PY{n}{df}\PY{p}{,} \PY{n}{vmax}\PY{o}{=}\PY{l+m+mf}{0.25}\PY{p}{,} \PY{n}{cmap}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{PuBuGn}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+             \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+             \PY{n}{info} \PY{o}{=} \PY{n}{coord}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{coord}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{n}{jacc\PYZus{}in}    
+             \PY{k}{return} \PY{n}{info}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{n}{file900} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*90.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file925} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*92.5*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file950} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*95.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file960} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*96.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file970} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*97.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file980} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*98.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file990} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*99.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file995} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*99.5*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{file999} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/yesNull/*99.9*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{c+c1}{\PYZsh{} table = np.zeros((4,9), dtype=\PYZsq{}float64\PYZsq{})}
+         \PY{c+c1}{\PYZsh{} row = 0}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{n}{columns} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Threshold}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Metric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{KEGG Pathway}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Cluster}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Score}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         \PY{n}{newTable} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{columns}\PY{p}{)}
+         \PY{n}{th} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{90.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{92.5}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{95.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{96.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{97.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{98.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{99.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{99.5}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{99.9}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{]}
+         \PY{n}{th} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{l+m+mi}{4} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{th}\PY{p}{]}
+         \PY{n}{th} \PY{o}{=} \PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n}{th} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{j}\PY{p}{]}
+         \PY{n}{mt} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Euclidean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Manhattan}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mass\PYZhy{}Distance}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Relative Euclidean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Pearson\PYZhy{}Partial Correlation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         \PY{n}{mtN} \PY{o}{=} \PY{n}{mt}\PY{p}{[}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]} \PY{o}{*} \PY{l+m+mi}{9}
+         \PY{n}{newTable}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Threshold}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{th}
+         \PY{n}{newTable}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Metric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{mtN}
+         \PY{n}{row} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+
+    \hypertarget{null-expression-allowed}{%
+\subsection{Null-expression allowed}\label{null-expression-allowed}}
+
+\hypertarget{thresholding}{%
+\subsubsection{90.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}33}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file900}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.08612565445026177
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.05361379092203068
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 2
+Highest Jaccard index: 0.029625057861441137
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.06469107108270386
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{92.5\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}34}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file925}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.1039461020211742
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.05761668661309625
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.03085966201322557
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.07239720034995625
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_10_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{95.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}35}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file950}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.14202508960573476
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 5
+Highest Jaccard index: 0.06836378567029358
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 6
+Highest Jaccard index: 0.1157791890571568
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.11557971014492753
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{96.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}36}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file960}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 13
+Highest Jaccard index: 0.1932826362484157
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.09766454352441614
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 6
+Highest Jaccard index: 0.05788005578800558
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.1304170073589534
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{97.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}37}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file970}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 17
+Highest Jaccard index: 0.24658703071672355
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 9
+Highest Jaccard index: 0.1059448688143474
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.06873428331936295
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 10
+Highest Jaccard index: 0.14002701485817198
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{98.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}38}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file980}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 32
+Highest Jaccard index: 0.2919954904171364
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 15
+Highest Jaccard index: 0.18790100824931252
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 16
+Highest Jaccard index: 0.10362694300518134
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 18
+Highest Jaccard index: 0.2592997811816193
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{99.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}39}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file990}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 50
+Highest Jaccard index: 0.29880478087649404
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 31
+Highest Jaccard index: 0.3557692307692308
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 39
+Highest Jaccard index: 0.11684370257966616
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 35
+Highest Jaccard index: 0.3507109004739337
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{99.5\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}40}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file995}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 101
+Highest Jaccard index: 0.3770491803278688
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 82
+Highest Jaccard index: 0.3942857142857143
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 136
+Highest Jaccard index: 0.2610294117647059
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 88
+Highest Jaccard index: 0.3942857142857143
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{thresholding}{%
+\subsubsection{99.9\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}41}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{file999}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{newTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 517
+Highest Jaccard index: 0.2589928057553957
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 403
+Highest Jaccard index: 0.2535211267605634
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 214
+Highest Jaccard index: 0.2246376811594203
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 435
+Highest Jaccard index: 0.2638888888888889
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{nN900} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*90.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN925} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*92.5*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN950} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*95.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN960} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*96.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN970} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*97.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN980} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*98.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN990} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*99.0*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN995} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*99.5*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+         \PY{n}{nN999} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{glob}\PY{o}{.}\PY{n}{glob}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{../Data/noNull/*99.9*KEGG*}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}44}]:} \PY{n}{nNTable} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{n}{columns}\PY{p}{)}
+         \PY{n}{th} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{90.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{92.5}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{95.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{96.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{97.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{98.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{99.0}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{99.5}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{99.9}\PY{l+s+s2}{\PYZpc{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{p}{]}
+         \PY{n}{th} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{*} \PY{l+m+mi}{5} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{th}\PY{p}{]}
+         \PY{n}{th} \PY{o}{=} \PY{p}{[}\PY{n}{i} \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n}{th} \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{j}\PY{p}{]}
+         \PY{n}{mt} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Euclidean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Manhattan}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Mass\PYZhy{}Distance}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} 
+               \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Relative Euclidean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Pearson\PYZhy{}Partial Correlation}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+         \PY{n}{mtN} \PY{o}{=} \PY{n}{mt} \PY{o}{*} \PY{l+m+mi}{9}
+         \PY{n}{nNTable}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Threshold}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{th}
+         \PY{n}{nNTable}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Metric}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{mtN}
+         \PY{n}{row} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+
+
+    \hypertarget{null-expression-dropped}{%
+\subsection{Null-expression dropped}\label{null-expression-dropped}}
+
+\hypertarget{thresholding}{%
+\subsubsection{90.0\% Thresholding}\label{thresholding}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}45}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN900}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.03733060598312452
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.04018040180401804
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 2
+Highest Jaccard index: 0.02960277903639933
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.04048924504428511
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_90.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 5
+Highest Jaccard index: 0.0872093023255814
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}46}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 92.5\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}47}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN925}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.04111644657863145
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.04986149584487535
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 3
+Highest Jaccard index: 0.03032954214056576
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.04958677685950413
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_92.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 8
+Highest Jaccard index: 0.08899876390605686
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}48}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 95.0\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}49}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN950}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.07887323943661972
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 5
+Highest Jaccard index: 0.06263817243920412
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 4
+Highest Jaccard index: 0.04298874104401229
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.06382978723404255
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_95.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 8
+Highest Jaccard index: 0.08736717827626919
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}50}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 96.0\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}51}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN960}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 12
+Highest Jaccard index: 0.07913669064748201
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 6
+Highest Jaccard index: 0.07938044530493707
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 6
+Highest Jaccard index: 0.05832747716092763
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 8
+Highest Jaccard index: 0.046061884669479615
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_96.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 13
+Highest Jaccard index: 0.10344827586206896
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}52}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 97.0\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}53}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN970}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 18
+Highest Jaccard index: 0.07422680412371134
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 9
+Highest Jaccard index: 0.040145985401459854
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 7
+Highest Jaccard index: 0.07192982456140351
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 11
+Highest Jaccard index: 0.053691275167785234
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_97.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 15
+Highest Jaccard index: 0.0918918918918919
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}54}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 98.0\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}55}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN980}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 32
+Highest Jaccard index: 0.14018691588785046
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 13
+Highest Jaccard index: 0.16964285714285715
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 207
+Highest Jaccard index: 0.08074534161490682
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 16
+Highest Jaccard index: 0.08761329305135952
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_98.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 22
+Highest Jaccard index: 0.09171974522292993
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}56}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 99.0\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}57}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN990}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 51
+Highest Jaccard index: 0.3138075313807531
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 29
+Highest Jaccard index: 0.35748792270531393
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 39
+Highest Jaccard index: 0.11773700305810395
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 33
+Highest Jaccard index: 0.3557692307692308
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_99.0\_MCL\_KEGG{\ldots}
+Number of clusters found: 44
+Highest Jaccard index: 0.319838056680162
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_40_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}58}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 99.5\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}59}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN995}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 97
+Highest Jaccard index: 0.3812154696132597
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 79
+Highest Jaccard index: 0.3988439306358382
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 147
+Highest Jaccard index: 0.2828685258964144
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 79
+Highest Jaccard index: 0.3942857142857143
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_99.5\_MCL\_KEGG{\ldots}
+Number of clusters found: 135
+Highest Jaccard index: 0.4364640883977901
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_42_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}60}]:} \PY{c+c1}{\PYZsh{}\PYZsh{}\PYZsh{} 99.9\PYZpc{} Thresholding}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}61}]:} \PY{k}{for} \PY{n}{z}\PY{p}{,} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{nN999}\PY{p}{)}\PY{p}{:}
+             \PY{k}{for} \PY{n}{y}\PY{p}{,} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{enumerate}\PY{p}{(}\PY{n}{create\PYZus{}heatmap}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                 \PY{n}{nNTable}\PY{o}{.}\PY{n}{iloc}\PY{p}{[}\PY{n}{row}\PY{p}{,} \PY{l+m+mi}{2}\PY{o}{+}\PY{n}{y}\PY{p}{]} \PY{o}{=} \PY{n}{j}
+             \PY{n}{row} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Euclidean\_noNull\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 483
+Highest Jaccard index: 0.2589928057553957
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Manhattan\_noNull\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 379
+Highest Jaccard index: 0.2535211267605634
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_3.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Mass-Distance\_noNull\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 179
+Highest Jaccard index: 0.2246376811594203
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_5.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_Relative-Euclidean\_noNull\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 401
+Highest Jaccard index: 0.2638888888888889
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_7.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Heatmap for HPA\_processed\_noNull\_Pe-parCorel\_noNull\_99.9\_MCL\_KEGG{\ldots}
+Number of clusters found: 313
+Highest Jaccard index: 0.24113475177304966
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_44_9.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}62}]:} \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Highest Jaccard Index for Each Thresholding and Metric for Null\PYZhy{}allowed}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{newTable}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Highest Jaccard Index for Each Thresholding and Metric for Null-allowed
+
+    \end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}62}]:}    Threshold              Metric  \textbackslash{}
+         0      90.0\%           Euclidean   
+         1      90.0\%           Manhattan   
+         2      90.0\%       Mass-Distance   
+         3      90.0\%  Relative Euclidean   
+         4      92.5\%           Euclidean   
+         5      92.5\%           Manhattan   
+         6      92.5\%       Mass-Distance   
+         7      92.5\%  Relative Euclidean   
+         8      95.0\%           Euclidean   
+         9      95.0\%           Manhattan   
+         10     95.0\%       Mass-Distance   
+         11     95.0\%  Relative Euclidean   
+         12     96.0\%           Euclidean   
+         13     96.0\%           Manhattan   
+         14     96.0\%       Mass-Distance   
+         15     96.0\%  Relative Euclidean   
+         16     97.0\%           Euclidean   
+         17     97.0\%           Manhattan   
+         18     97.0\%       Mass-Distance   
+         19     97.0\%  Relative Euclidean   
+         20     98.0\%           Euclidean   
+         21     98.0\%           Manhattan   
+         22     98.0\%       Mass-Distance   
+         23     98.0\%  Relative Euclidean   
+         24     99.0\%           Euclidean   
+         25     99.0\%           Manhattan   
+         26     99.0\%       Mass-Distance   
+         27     99.0\%  Relative Euclidean   
+         28     99.5\%           Euclidean   
+         29     99.5\%           Manhattan   
+         30     99.5\%       Mass-Distance   
+         31     99.5\%  Relative Euclidean   
+         32     99.9\%           Euclidean   
+         33     99.9\%           Manhattan   
+         34     99.9\%       Mass-Distance   
+         35     99.9\%  Relative Euclidean   
+         
+                                             KEGG Pathway           Cluster      Score  
+         0                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#2-(3788)  0.0861257  
+         1                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#2-(6301)  0.0536138  
+         2   NEUROACTIVE\_LIGAND-RECEPTOR\_INTERACTION(267)  Cluster\#2-(6406)  0.0296251  
+         3                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#2-(5136)  0.0646911  
+         4                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(3080)   0.103946  
+         5                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#2-(5825)  0.0576167  
+         6   NEUROACTIVE\_LIGAND-RECEPTOR\_INTERACTION(267)  Cluster\#2-(6748)  0.0308597  
+         7                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#2-(4542)  0.0723972  
+         8                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(2188)   0.142025  
+         9                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(4843)  0.0683638  
+         10                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#4-(1923)   0.115779  
+         11                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(2718)    0.11558  
+         12                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#4-(1522)   0.193283  
+         13                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(3258)  0.0976645  
+         14                                 RIBOSOME(128)  Cluster\#6-(1389)  0.0578801  
+         15                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#4-(2404)   0.130417  
+         16                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#6-(1100)   0.246587  
+         17                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(2969)   0.105945  
+         18                                 RIBOSOME(128)  Cluster\#6-(1147)  0.0687343  
+         19                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#4-(2171)   0.140027  
+         20                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#10-(785)   0.291995  
+         21                   OLFACTORY\_TRANSDUCTION(361)   Cluster\#7-(935)   0.187901  
+         22                                 RIBOSOME(128)   Cluster\#9-(724)   0.103627  
+         23                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#10-(790)     0.2593  
+         24                                 RIBOSOME(128)  Cluster\#28-(198)   0.298805  
+         25                                 RIBOSOME(128)  Cluster\#22-(154)   0.355769  
+         26                                 RIBOSOME(128)  Cluster\#11-(608)   0.116844  
+         27                                 RIBOSOME(128)  Cluster\#23-(157)   0.350711  
+         28                                 RIBOSOME(128)  Cluster\#48-(124)   0.377049  
+         29                                 RIBOSOME(128)  Cluster\#35-(116)   0.394286  
+         30                                 RIBOSOME(128)  Cluster\#20-(215)   0.261029  
+         31                                 RIBOSOME(128)  Cluster\#36-(116)   0.394286  
+         32                                 RIBOSOME(128)   Cluster\#28-(47)   0.258993  
+         33                                 RIBOSOME(128)   Cluster\#36-(50)   0.253521  
+         34                                 RIBOSOME(128)    Cluster\#8-(41)   0.224638  
+         35                                 RIBOSOME(128)   Cluster\#22-(54)   0.263889  
+\end{Verbatim}
+            
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}63}]:} \PY{n+nb}{print} \PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Highest Jaccard Index for Each Thresholding and Metric for noNull}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+         \PY{n}{nNTable}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Highest Jaccard Index for Each Thresholding and Metric for noNull
+
+    \end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}63}]:}    Threshold                       Metric  \textbackslash{}
+         0      90.0\%                    Euclidean   
+         1      90.0\%                    Manhattan   
+         2      90.0\%                Mass-Distance   
+         3      90.0\%           Relative Euclidean   
+         4      90.0\%  Pearson-Partial Correlation   
+         5      92.5\%                    Euclidean   
+         6      92.5\%                    Manhattan   
+         7      92.5\%                Mass-Distance   
+         8      92.5\%           Relative Euclidean   
+         9      92.5\%  Pearson-Partial Correlation   
+         10     95.0\%                    Euclidean   
+         11     95.0\%                    Manhattan   
+         12     95.0\%                Mass-Distance   
+         13     95.0\%           Relative Euclidean   
+         14     95.0\%  Pearson-Partial Correlation   
+         15     96.0\%                    Euclidean   
+         16     96.0\%                    Manhattan   
+         17     96.0\%                Mass-Distance   
+         18     96.0\%           Relative Euclidean   
+         19     96.0\%  Pearson-Partial Correlation   
+         20     97.0\%                    Euclidean   
+         21     97.0\%                    Manhattan   
+         22     97.0\%                Mass-Distance   
+         23     97.0\%           Relative Euclidean   
+         24     97.0\%  Pearson-Partial Correlation   
+         25     98.0\%                    Euclidean   
+         26     98.0\%                    Manhattan   
+         27     98.0\%                Mass-Distance   
+         28     98.0\%           Relative Euclidean   
+         29     98.0\%  Pearson-Partial Correlation   
+         30     99.0\%                    Euclidean   
+         31     99.0\%                    Manhattan   
+         32     99.0\%                Mass-Distance   
+         33     99.0\%           Relative Euclidean   
+         34     99.0\%  Pearson-Partial Correlation   
+         35     99.5\%                    Euclidean   
+         36     99.5\%                    Manhattan   
+         37     99.5\%                Mass-Distance   
+         38     99.5\%           Relative Euclidean   
+         39     99.5\%  Pearson-Partial Correlation   
+         40     99.9\%                    Euclidean   
+         41     99.9\%                    Manhattan   
+         42     99.9\%                Mass-Distance   
+         43     99.9\%           Relative Euclidean   
+         44     99.9\%  Pearson-Partial Correlation   
+         
+                                             KEGG Pathway           Cluster      Score  
+         0   NEUROACTIVE\_LIGAND-RECEPTOR\_INTERACTION(267)  Cluster\#2-(3790)  0.0373306  
+         1                                  RIBOSOME(128)  Cluster\#3-(2409)  0.0401804  
+         2   NEUROACTIVE\_LIGAND-RECEPTOR\_INTERACTION(267)  Cluster\#2-(6550)  0.0296028  
+         3                                  RIBOSOME(128)  Cluster\#3-(2339)  0.0404892  
+         4                       PARKINSON'S\_DISEASE(141)   Cluster\#5-(607)  0.0872093  
+         5                    OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(3108)  0.0411164  
+         6                                  RIBOSOME(128)  Cluster\#3-(1767)  0.0498615  
+         7   NEUROACTIVE\_LIGAND-RECEPTOR\_INTERACTION(267)  Cluster\#2-(6799)  0.0303295  
+         8                                  RIBOSOME(128)  Cluster\#4-(1777)  0.0495868  
+         9                       PARKINSON'S\_DISEASE(141)   Cluster\#7-(740)  0.0889988  
+         10       COMPLEMENT\_AND\_COAGULATION\_CASCADES(67)   Cluster\#6-(316)  0.0788732  
+         11                                 RIBOSOME(128)  Cluster\#5-(1314)  0.0626382  
+         12   CYTOKINE-CYTOKINE\_RECEPTOR\_INTERACTION(253)  Cluster\#4-(1785)  0.0429887  
+         13                                 RIBOSOME(128)  Cluster\#5-(1272)  0.0638298  
+         14                      PARKINSON'S\_DISEASE(141)   Cluster\#8-(780)  0.0873672  
+         15       COMPLEMENT\_AND\_COAGULATION\_CASCADES(67)   Cluster\#8-(383)  0.0791367  
+         16                                 RIBOSOME(128)   Cluster\#6-(987)  0.0793804  
+         17                                 RIBOSOME(128)  Cluster\#6-(1378)  0.0583275  
+         18                   OLFACTORY\_TRANSDUCTION(361)  Cluster\#3-(2614)  0.0460619  
+         19                        SALIVARY\_SECRETION(86)   Cluster\#13-(74)   0.103448  
+         20       COMPLEMENT\_AND\_COAGULATION\_CASCADES(67)  Cluster\#10-(454)  0.0742268  
+         21                   CHEMICAL\_CARCINOGENESIS(73)   Cluster\#9-(212)   0.040146  
+         22                                 RIBOSOME(128)  Cluster\#6-(1094)  0.0719298  
+         23                   CHEMICAL\_CARCINOGENESIS(73)   Cluster\#9-(398)  0.0536913  
+         24                      PANCREATIC\_SECRETION(94)  Cluster\#15-(108)  0.0918919  
+         25                      PANCREATIC\_SECRETION(94)   Cluster\#29-(28)   0.140187  
+         26                                 RIBOSOME(128)  Cluster\#11-(396)   0.169643  
+         27                 CITRATE\_CYCLE\_(TCA\_CYCLE)(30)  Cluster\#25-(144)  0.0807453  
+         28       COMPLEMENT\_AND\_COAGULATION\_CASCADES(67)  Cluster\#14-(293)  0.0876133  
+         29                      PARKINSON'S\_DISEASE(141)   Cluster\#7-(716)  0.0917197  
+         30                                 RIBOSOME(128)  Cluster\#29-(186)   0.313808  
+         31                                 RIBOSOME(128)  Cluster\#22-(153)   0.357488  
+         32                                 RIBOSOME(128)  Cluster\#11-(603)   0.117737  
+         33                                 RIBOSOME(128)  Cluster\#23-(154)   0.355769  
+         34                                 RIBOSOME(128)  Cluster\#26-(198)   0.319838  
+         35                                 RIBOSOME(128)  Cluster\#46-(122)   0.381215  
+         36                                 RIBOSOME(128)  Cluster\#38-(114)   0.398844  
+         37                                 RIBOSOME(128)  Cluster\#23-(194)   0.282869  
+         38                                 RIBOSOME(128)  Cluster\#40-(116)   0.394286  
+         39                                 RIBOSOME(128)  Cluster\#43-(132)   0.436464  
+         40                                 RIBOSOME(128)   Cluster\#28-(47)   0.258993  
+         41                                 RIBOSOME(128)   Cluster\#37-(50)   0.253521  
+         42                                 RIBOSOME(128)    Cluster\#7-(41)   0.224638  
+         43                                 RIBOSOME(128)   Cluster\#22-(54)   0.263889  
+         44                                 RIBOSOME(128)   Cluster\#26-(47)   0.241135  
+\end{Verbatim}
+            
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}

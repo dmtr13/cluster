@@ -30,4 +30,4 @@ The output is in '--abc' format acceptable by MCL.
 [4A_process_kegg](4A_process_kegg.py) then feed the MCL output from §4 into
 [4_kegg_mcl](4_kegg_mcl.py) which will create a Jaccard index-based matrix
 pairing each cluster (as defined by MCL) and each (manually-curated) KEGG
-pathway. The results of this can be seen [elsewhere](../Results/MCL\ Output.ipynb).
+pathway. The results of this can be seen [elsewhere](../Results/MCL_Output.ipynb).

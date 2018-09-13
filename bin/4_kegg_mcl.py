@@ -36,7 +36,7 @@ mclgenes = dict()
 inp = open(sys.argv[1], 'r')
 for z, line in enumerate(inp):
     line = line.rstrip('\n').split('\t')
-    if len(line) > 10:
+    if len(line) >= 10:
         colcounts.append("Cluster#{a}-({b})".format(a=z+1, b=len(line)))
         mclgenes[z] = set(line)
 array = np.zeros((len(keys), len(colcounts)), dtype=float)
